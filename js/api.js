@@ -30,20 +30,7 @@ const API = {
   },
 
   async verifyPassword(password) {
-    if (this.isLocal()) {
-      return password === this._getSitePassword();
-    }
-    try {
-      const resp = await fetch(this._apiUrl('/api/verify-password'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-      const data = await resp.json();
-      return data.ok === true;
-    } catch {
-      return false;
-    }
+    return password === this._getSitePassword();
   },
 
   async submitRSVP(payload) {
