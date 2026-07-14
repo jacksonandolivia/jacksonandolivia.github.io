@@ -129,6 +129,33 @@ const RSVPForm = {
       dietGroup.appendChild(dietLabel);
       dietGroup.appendChild(dietInput);
 
+      let emailGroup;
+      if (guest.ageGroup === 'adult') {
+        emailGroup = document.createElement('div');
+        emailGroup.className = 'email-group';
+
+        const emailLabel = document.createElement('label');
+        emailLabel.htmlFor = `email-${guest.id}`;
+        emailLabel.textContent = 'Email:';
+
+        const emailInput = document.createElement('input');
+        emailInput.type = 'email';
+        emailInput.id = `email-${guest.id}`;
+        emailInput.className = 'email-input';
+        emailInput.placeholder = 'guest@example.com';
+        emailInput.required = true;
+
+        if (existing) {
+          const existingGuest = existing.guests.find(g => g.guestId === guest.id);
+          if (existingGuest?.email) {
+            emailInput.value = existingGuest.email;
+          }
+        }
+
+        emailGroup.appendChild(emailLabel);
+        emailGroup.appendChild(emailInput);
+      }
+
       const checkboxWrapper = document.createElement('div');
       checkboxWrapper.className = 'checkbox-wrapper';
       checkboxWrapper.appendChild(checkbox);
@@ -138,6 +165,7 @@ const RSVPForm = {
       row.appendChild(checkboxWrapper);
       row.appendChild(mealGroup);
       row.appendChild(dietGroup);
+      if (emailGroup) row.appendChild(emailGroup);
       list.appendChild(row);
 
       checkbox.addEventListener('change', () => {
@@ -174,6 +202,7 @@ const RSVPForm = {
 
     const rows = document.querySelectorAll('.guest-row');
     let hasAttending = false;
+    let hasEmail = false;
     const guestsData = [];
 
     for (const row of rows) {
@@ -182,6 +211,7 @@ const RSVPForm = {
       const checkbox = document.getElementById(`attend-${guest.id}`);
       const mealSelect = document.getElementById(`meal-${guest.id}`);
       const dietInput = document.getElementById(`diet-${guest.id}`);
+      const emailInput = document.getElementById(`email-${guest.id}`);
 
       const attending = checkbox.checked;
 
@@ -195,6 +225,11 @@ const RSVPForm = {
         }
       }
 
+      const email = emailInput ? emailInput.value.trim() : '';
+      if (attending && email) {
+        hasEmail = true;
+      }
+
       guestsData.push({
         guestId: guest.id,
         firstName: guest.firstName,
@@ -202,11 +237,18 @@ const RSVPForm = {
         attending,
         meal: attending ? mealSelect.value : '',
         dietaryRestrictions: dietInput.value.trim(),
+        email: email || undefined,
       });
     }
 
     if (!hasAttending) {
       errorEl.textContent = 'Please select at least one guest to attend.';
+      errorEl.hidden = false;
+      return;
+    }
+
+    if (!hasEmail) {
+      errorEl.textContent = 'Please provide an email address for at least one attending adult.';
       errorEl.hidden = false;
       return;
     }

@@ -99,6 +99,7 @@ const Admin = {
     const attending = rsvpGuest ? rsvpGuest.attending : false;
     const meal = rsvpGuest && rsvpGuest.attending ? (rsvpGuest.meal || '') : '';
     const diet = rsvpGuest && rsvpGuest.attending ? (rsvpGuest.dietaryRestrictions || '') : '';
+    const email = rsvpGuest ? (rsvpGuest.email || '') : '';
 
     const attendingCheckbox = document.createElement('input');
     attendingCheckbox.type = 'checkbox';
@@ -122,12 +123,20 @@ const Admin = {
     cells[7].innerHTML = '';
     cells[7].appendChild(dietInput);
 
+    const emailInput = document.createElement('input');
+    emailInput.type = 'email';
+    emailInput.className = 'admin-edit-input';
+    emailInput.value = email;
+    emailInput.placeholder = 'guest@example.com';
+    cells[8].innerHTML = '';
+    cells[8].appendChild(emailInput);
+
     attendingCheckbox.addEventListener('change', () => {
       mealSelect.disabled = !attendingCheckbox.checked;
       if (!attendingCheckbox.checked) mealSelect.value = '';
     });
 
-    const actionCell = cells[8];
+    const actionCell = cells[9];
     actionCell.innerHTML = '';
 
     const saveBtn = document.createElement('button');
@@ -161,6 +170,7 @@ const Admin = {
         attending: newAttending,
         meal: newMeal,
         dietaryRestrictions: dietInput.value.trim(),
+        email: emailInput.value.trim() || undefined,
       };
 
       if (existing >= 0) {
@@ -216,6 +226,7 @@ const Admin = {
         const attending = rsvpGuest ? rsvpGuest.attending : false;
         const meal = rsvpGuest && rsvpGuest.attending ? rsvpGuest.meal : '';
         const diet = rsvpGuest && rsvpGuest.attending ? (rsvpGuest.dietaryRestrictions || '') : '';
+        const email = rsvpGuest ? (rsvpGuest.email || '') : '';
 
         if (attending) {
           totalAttending++;
@@ -234,6 +245,7 @@ const Admin = {
           <td class="cell-attending ${responded ? (attending ? 'status-yes' : 'status-no') : 'status-none'}">${responded ? (attending ? 'Yes' : 'No') : 'Not Responded'}</td>
           <td class="cell-meal">${meal ? this._mealLabel(meal) : '-'}</td>
           <td>${diet || '-'}</td>
+          <td>${email || '-'}</td>
           <td></td>
         `;
         tbody.appendChild(row);
@@ -242,7 +254,7 @@ const Admin = {
         editBtn.className = 'btn-sm btn-sm-edit';
         editBtn.textContent = 'Edit';
         editBtn.addEventListener('click', () => this._editRow(guest, rsvp, rsvpGuest, row));
-        row.cells[8].appendChild(editBtn);
+        row.cells[9].appendChild(editBtn);
       }
     }
 
