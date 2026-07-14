@@ -1,0 +1,11 @@
+{
+  "name": "wedding-rsvp-api",
+  "version": "1.0.0",
+  "description": "Azure Functions backend for wedding RSVP",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.0.0"
+  }
+}
