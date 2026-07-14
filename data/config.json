@@ -1,0 +1,15 @@
+{
+  "mealOptions": [
+    { "value": "chicken", "label": "Chicken" },
+    { "value": "fish", "label": "Fish" },
+    { "value": "beef", "label": "Beef" },
+    { "value": "vegetarian", "label": "Vegetarian" },
+    { "value": "child-chicken-nuggets", "label": "Child Meal 1 - Chicken Nuggets" },
+    { "value": "child-mac-cheese", "label": "Child Meal 2 - Mac & Cheese" }
+  ],
+  "apiBaseUrl": "https://wedding-rsvp-api-bbuoyk3ezmdfs.azurewebsites.net",
+  "sitePassword": "JacksonAndOlivia2026",
+  "adminPasswordHash": "3a7de6ffdec6b2db3c5ab204c87279a8a91a91da877cc0c085c0b553538720df",
+  "weddingDate": "2025-08-15",
+  "rsvpDeadline": "2025-07-15"
+}

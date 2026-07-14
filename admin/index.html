@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding RSVP — Admin</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container container-admin">
+
+    <div id="admin-login-section">
+      <h1>Admin</h1>
+      <p class="subtitle">RSVP Dashboard</p>
+      <div class="card">
+        <form id="admin-login-form" novalidate>
+          <div class="form-group">
+            <label for="admin-password">Admin Password</label>
+            <input type="password" id="admin-password" placeholder="Enter admin password" autocomplete="off" required>
+          </div>
+          <button type="submit" class="submit-btn">Sign In</button>
+          <div id="admin-login-error" class="error-msg" hidden></div>
+        </form>
+      </div>
+    </div>
+
+    <div id="admin-dashboard" hidden>
+      <div class="dashboard-header">
+        <h1>RSVP Dashboard</h1>
+        <button id="admin-logout-btn" class="logout-btn">Log Out</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-total-households">0</span>
+          <span class="stat-label">Households</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-total-guests">0</span>
+          <span class="stat-label">Total Guests</span>
+        </div>
+        <div class="stat-card stat-rsvped">
+          <span class="stat-number" id="stat-rsvped">0</span>
+          <span class="stat-label">RSVP'd</span>
+        </div>
+        <div class="stat-card stat-not-rsvped">
+          <span class="stat-number" id="stat-not-rsvped">0</span>
+          <span class="stat-label">Not Yet RSVP'd</span>
+        </div>
+        <div class="stat-card stat-attending">
+          <span class="stat-number" id="stat-attending">0</span>
+          <span class="stat-label">Attending</span>
+        </div>
+        <div class="stat-card stat-not-attending">
+          <span class="stat-number" id="stat-not-attending">0</span>
+          <span class="stat-label">Not Attending</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Meal Breakdown</h2>
+        <ul id="meal-breakdown" class="meal-list"></ul>
+      </div>
+
+      <div class="card">
+        <h2>All Guests</h2>
+        <div class="table-wrap">
+          <table id="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>RSVP'd</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Age</th>
+                <th>Attending</th>
+                <th>Meal</th>
+                <th>Dietary Restrictions</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => Admin.init());</script>
+</body>
+</html>
