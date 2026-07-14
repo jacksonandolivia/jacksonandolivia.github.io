@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 
 CSV_PATH = Path(__file__).parent.parent / 'guest-list.csv'
-OUTPUT_PATH = Path(__file__).parent.parent / 'src' / 'data' / 'guests.json'
-CONFIG_PATH = Path(__file__).parent.parent / 'src' / 'data' / 'config.json'
+OUTPUT_PATH = Path(__file__).parent.parent / 'data' / 'guests.json'
+CONFIG_PATH = Path(__file__).parent.parent / 'data' / 'config.json'
 
 guests = []
 next_id = 1

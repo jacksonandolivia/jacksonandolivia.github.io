@@ -89,12 +89,12 @@ az functionapp deploy \
 rm -f "$DEPLOY_ZIP"
 rm -rf "$API_DIR/node_modules"
 
-# Step 8: Configure CORS for local development
+# Step 8: Configure CORS
 echo "==> [8/8] Configuring CORS..."
 az functionapp cors add \
   --name "$FUNCTION_APP" \
   --resource-group "$RG_NAME" \
-  --allowed-origins "http://localhost:8000" "http://localhost:3000" "http://localhost:5500" \
+  --allowed-origins "http://localhost:8000" "http://localhost:3000" "http://localhost:5500" "https://jacksonandolivia.github.io" \
   > /dev/null 2>&1 || true
 
 echo ""
@@ -104,10 +104,14 @@ echo "================================================"
 echo ""
 echo "Function App:  https://${FUNCTION_APP}.azurewebsites.net"
 echo ""
+echo "Frontend:"
+echo "  RSVP:   https://jacksonandolivia.github.io/RSVP/"
+echo "  Admin:  https://jacksonandolivia.github.io/admin/"
+echo ""
 echo "To test the API:"
-echo "  curl -s https://${FUNCTION_APP}.azurewebsites.net/api/verify-password \\"
+echo "  curl -s https://${FUNCTION_APP}.azurewebsites.net/api/submit-rsvp \\"
 echo "    -H 'Content-Type: application/json' \\"
-echo "    -d '{\"password\":\"${PASSWORD}\"}'"
+echo "    -d '{\"sitePassword\":\"${PASSWORD}\",\"householdId\":1,\"guests\":[{\"guestId\":1,\"firstName\":\"Test\",\"lastName\":\"User\",\"attending\":true,\"meal\":\"chicken\"}]}'"
 echo ""
 echo "To clean up and delete everything:"
 echo "  az group delete --name $RG_NAME --yes"
