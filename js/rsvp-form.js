@@ -218,7 +218,21 @@ const RSVPForm = {
       guests: guestsData,
     };
 
-    await API.submitRSVP(payload);
+    const submitBtn = document.querySelector('#rsvp-form .submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+    try {
+      await API.submitRSVP(payload);
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.hidden = false;
+      return;
+    }
+
     this._showConfirmation();
   },
 
