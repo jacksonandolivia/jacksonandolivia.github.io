@@ -38,12 +38,20 @@ const App = {
     e.preventDefault();
     const errorEl = document.getElementById('login-error');
     const password = document.getElementById('login-password').value;
+    const btn = document.querySelector('#login-form .submit-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Signing In...';
 
     const ok = await Auth.login(password);
     if (ok) {
+      btn.disabled = false;
+      btn.textContent = originalText;
       errorEl.hidden = true;
       this.showLookup();
     } else {
+      btn.disabled = false;
+      btn.textContent = originalText;
       errorEl.textContent = 'Incorrect password. Please try again.';
       errorEl.hidden = false;
     }

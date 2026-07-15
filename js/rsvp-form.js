@@ -36,10 +36,6 @@ const RSVPForm = {
     form.id = 'rsvp-form';
     form.noValidate = true;
 
-    const heading = document.createElement('h2');
-    heading.textContent = `RSVP for the ${this.currentLastName} Family`;
-    form.appendChild(heading);
-
     if (existing) {
       const notice = document.createElement('p');
       notice.className = 'submitted-notice';
@@ -55,22 +51,51 @@ const RSVPForm = {
       row.className = 'guest-row';
       row.dataset.index = index;
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = `attend-${guest.id}`;
-      checkbox.className = 'attend-check';
-      checkbox.checked = existing
-        ? (existing.guests.find(g => g.guestId === guest.id)?.attending ?? guest.ageGroup === 'adult')
-        : guest.ageGroup === 'adult';
+      const existingGuest = existing ? existing.guests.find(g => g.guestId === guest.id) : null;
 
-      const label = document.createElement('label');
-      label.htmlFor = `attend-${guest.id}`;
-      label.className = 'guest-name';
-      label.textContent = `${guest.firstName} ${guest.lastName}`;
+      const header = document.createElement('div');
+      header.className = 'guest-header';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'guest-name';
+      nameSpan.textContent = `${guest.firstName} ${guest.lastName}`;
 
       const badge = document.createElement('span');
       badge.className = `age-badge ${guest.ageGroup}`;
       badge.textContent = guest.ageGroup === 'adult' ? 'Adult' : 'Child';
+
+      header.appendChild(nameSpan);
+      header.appendChild(badge);
+
+      const radioGroup = document.createElement('div');
+      radioGroup.className = 'attend-radio-group';
+
+      const radioYes = document.createElement('input');
+      radioYes.type = 'radio';
+      radioYes.name = `attend-${guest.id}`;
+      radioYes.id = `attend-yes-${guest.id}`;
+      radioYes.value = 'yes';
+      radioYes.checked = existingGuest?.attending === true;
+
+      const radioYesLabel = document.createElement('label');
+      radioYesLabel.htmlFor = `attend-yes-${guest.id}`;
+      radioYesLabel.textContent = 'Will Attend';
+
+      const radioNo = document.createElement('input');
+      radioNo.type = 'radio';
+      radioNo.name = `attend-${guest.id}`;
+      radioNo.id = `attend-no-${guest.id}`;
+      radioNo.value = 'no';
+      radioNo.checked = existingGuest?.attending === false;
+
+      const radioNoLabel = document.createElement('label');
+      radioNoLabel.htmlFor = `attend-no-${guest.id}`;
+      radioNoLabel.textContent = 'Won\'t Attend';
+
+      radioGroup.appendChild(radioYes);
+      radioGroup.appendChild(radioYesLabel);
+      radioGroup.appendChild(radioNo);
+      radioGroup.appendChild(radioNoLabel);
 
       const mealGroup = document.createElement('div');
       mealGroup.className = 'meal-group';
@@ -82,7 +107,7 @@ const RSVPForm = {
       const mealSelect = document.createElement('select');
       mealSelect.id = `meal-${guest.id}`;
       mealSelect.className = 'meal-select';
-      mealSelect.disabled = !checkbox.checked;
+      mealSelect.disabled = !radioYes.checked;
 
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
@@ -96,11 +121,8 @@ const RSVPForm = {
         mealSelect.appendChild(option);
       });
 
-      if (existing) {
-        const existingGuest = existing.guests.find(g => g.guestId === guest.id);
-        if (existingGuest?.meal) {
-          mealSelect.value = existingGuest.meal;
-        }
+      if (existingGuest?.meal) {
+        mealSelect.value = existingGuest.meal;
       }
 
       mealGroup.appendChild(mealLabel);
@@ -119,11 +141,8 @@ const RSVPForm = {
       dietInput.className = 'diet-input';
       dietInput.placeholder = 'Optional';
 
-      if (existing) {
-        const existingGuest = existing.guests.find(g => g.guestId === guest.id);
-        if (existingGuest?.dietaryRestrictions) {
-          dietInput.value = existingGuest.dietaryRestrictions;
-        }
+      if (existingGuest?.dietaryRestrictions) {
+        dietInput.value = existingGuest.dietaryRestrictions;
       }
 
       dietGroup.appendChild(dietLabel);
@@ -145,35 +164,29 @@ const RSVPForm = {
         emailInput.placeholder = 'guest@example.com';
         emailInput.required = true;
 
-        if (existing) {
-          const existingGuest = existing.guests.find(g => g.guestId === guest.id);
-          if (existingGuest?.email) {
-            emailInput.value = existingGuest.email;
-          }
+        if (existingGuest?.email) {
+          emailInput.value = existingGuest.email;
         }
 
         emailGroup.appendChild(emailLabel);
         emailGroup.appendChild(emailInput);
       }
 
-      const checkboxWrapper = document.createElement('div');
-      checkboxWrapper.className = 'checkbox-wrapper';
-      checkboxWrapper.appendChild(checkbox);
-      checkboxWrapper.appendChild(label);
-      checkboxWrapper.appendChild(badge);
+      const toggleFields = () => {
+        const isAttending = radioYes.checked;
+        mealSelect.disabled = !isAttending;
+        if (!isAttending) mealSelect.value = '';
+      };
 
-      row.appendChild(checkboxWrapper);
+      radioYes.addEventListener('change', toggleFields);
+      radioNo.addEventListener('change', toggleFields);
+
+      row.appendChild(header);
+      row.appendChild(radioGroup);
       row.appendChild(mealGroup);
       row.appendChild(dietGroup);
       if (emailGroup) row.appendChild(emailGroup);
       list.appendChild(row);
-
-      checkbox.addEventListener('change', () => {
-        mealSelect.disabled = !checkbox.checked;
-        if (!checkbox.checked) {
-          mealSelect.value = '';
-        }
-      });
     });
 
     form.appendChild(list);
@@ -208,12 +221,20 @@ const RSVPForm = {
     for (const row of rows) {
       const index = parseInt(row.dataset.index);
       const guest = this.currentHousehold[index];
-      const checkbox = document.getElementById(`attend-${guest.id}`);
+      const radioYes = document.getElementById(`attend-yes-${guest.id}`);
+      const radioNo = document.getElementById(`attend-no-${guest.id}`);
       const mealSelect = document.getElementById(`meal-${guest.id}`);
       const dietInput = document.getElementById(`diet-${guest.id}`);
       const emailInput = document.getElementById(`email-${guest.id}`);
 
-      const attending = checkbox.checked;
+      if (!radioYes.checked && !radioNo.checked) {
+        errorEl.textContent = `Please indicate whether ${guest.firstName} ${guest.lastName} will attend.`;
+        errorEl.hidden = false;
+        radioYes.focus();
+        return;
+      }
+
+      const attending = radioYes.checked;
 
       if (attending) {
         hasAttending = true;
@@ -248,7 +269,7 @@ const RSVPForm = {
     }
 
     if (!hasEmail) {
-      errorEl.textContent = 'Please provide an email address for at least one attending adult.';
+      errorEl.textContent = 'Please provide an email address for at least one attending guest.';
       errorEl.hidden = false;
       return;
     }
@@ -275,20 +296,57 @@ const RSVPForm = {
       return;
     }
 
-    this._showConfirmation();
+    this._showConfirmation(guestsData);
   },
 
-  _showConfirmation() {
+  _mealLabel(value) {
+    const opt = this.config.mealOptions.find(m => m.value === value);
+    return opt ? opt.label : value;
+  },
+
+  _showConfirmation(guestsData) {
+    document.getElementById('lookup-section').hidden = true;
     const container = document.getElementById('rsvp-container');
-    container.innerHTML = `
-      <div class="confirmation">
-        <h2>RSVP Received!</h2>
-        <p>Thank you! Your RSVP for the <strong>${this.currentLastName}</strong> family has been saved.</p>
+    const attendingGuests = guestsData.filter(g => g.attending);
+    const notAttendingGuests = guestsData.filter(g => !g.attending);
+
+    let summaryHtml = '<div class="confirmation"><h2>RSVP Received!</h2><p>Thank you! Your RSVP has been saved.</p>';
+
+    if (attendingGuests.length) {
+      summaryHtml += '<h3>Attending</h3><ul class="confirmation-list">';
+      for (const g of attendingGuests) {
+        const meal = g.meal ? this._mealLabel(g.meal) : '';
+        const diet = g.dietaryRestrictions || '';
+        summaryHtml += `<li><strong>${g.firstName} ${g.lastName}</strong>`;
+        if (meal) summaryHtml += ` &mdash; ${meal}`;
+        if (diet) summaryHtml += ` <span class="diet-note">(Diet: ${diet})</span>`;
+        if (g.email) summaryHtml += ` <span class="email-note">(${g.email})</span>`;
+        summaryHtml += '</li>';
+      }
+      summaryHtml += '</ul>';
+    }
+
+    if (notAttendingGuests.length) {
+      summaryHtml += '<h3>Not Attending</h3><ul class="confirmation-list">';
+      for (const g of notAttendingGuests) {
+        summaryHtml += `<li>${g.firstName} ${g.lastName}</li>`;
+      }
+      summaryHtml += '</ul>';
+    }
+
+    summaryHtml += `
         <p>You can return here to update your response before the deadline.</p>
-        <button id="new-rsvp-btn" class="submit-btn">Submit Another RSVP</button>
-        <button id="logout-btn" class="logout-btn">Log Out</button>
+        <button id="edit-rsvp-btn" class="submit-btn">Edit RSVP</button>
+        <button id="new-rsvp-btn" class="logout-btn">Submit Another RSVP</button>
+        <a href="/" id="home-btn" class="logout-btn" style="text-decoration:none;">Return to Home</a>
       </div>
     `;
+
+    container.innerHTML = summaryHtml;
+
+    document.getElementById('edit-rsvp-btn').addEventListener('click', () => {
+      this.render(container);
+    });
 
     document.getElementById('new-rsvp-btn').addEventListener('click', () => {
       this.currentHousehold = null;
@@ -296,9 +354,5 @@ const RSVPForm = {
       App.showLookup();
     });
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      Auth.logout();
-      App.showLogin();
-    });
   },
 };

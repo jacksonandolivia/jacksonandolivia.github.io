@@ -37,13 +37,21 @@ const Admin = {
     e.preventDefault();
     const errorEl = document.getElementById('admin-login-error');
     const password = document.getElementById('admin-password').value;
+    const btn = document.querySelector('#admin-login-form .submit-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Signing In...';
 
     const hash = await this._hashPassword(password);
     if (hash === this.config.adminPasswordHash) {
+      btn.disabled = false;
+      btn.textContent = originalText;
       sessionStorage.setItem('wedding_admin_auth', 'true');
       errorEl.hidden = true;
       this._showDashboard();
     } else {
+      btn.disabled = false;
+      btn.textContent = originalText;
       errorEl.textContent = 'Incorrect admin password.';
       errorEl.hidden = false;
     }
@@ -151,6 +159,10 @@ const Admin = {
         return;
       }
 
+      const originalSaveText = saveBtn.textContent;
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
       const hId = guest.householdId;
       let rsvpData = this.rsvps[hId];
       if (!rsvpData) {
@@ -181,6 +193,8 @@ const Admin = {
 
       rsvpData.submittedAt = new Date().toISOString();
       await this._saveRSVP(hId, rsvpData);
+      saveBtn.disabled = false;
+      saveBtn.textContent = originalSaveText;
     });
 
     const cancelBtn = document.createElement('button');
@@ -280,5 +294,79 @@ const Admin = {
       document.getElementById('admin-login-section').hidden = false;
       document.getElementById('admin-password').value = '';
     });
+
+    document.getElementById('export-csv-btn').addEventListener('click', () => this._exportCSV());
+  },
+
+  _escapeCsv(val) {
+    const str = String(val ?? '');
+    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+  },
+
+  _exportCSV() {
+    const btn = document.getElementById('export-csv-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Exporting...';
+
+    const rows = [['Household ID', 'Last Name', 'First Name', 'Age Group', 'RSVP\'d', 'Attending', 'Meal', 'Dietary Restrictions', 'Email', 'Submitted At']];
+
+    const households = {};
+    for (const guest of this.guests) {
+      if (!households[guest.householdId]) {
+        households[guest.householdId] = [];
+      }
+      households[guest.householdId].push(guest);
+    }
+
+    const householdIds = Object.keys(households).map(Number).sort((a, b) => a - b);
+
+    for (const hId of householdIds) {
+      const guests = households[hId];
+      const rsvp = this.rsvps[hId];
+      const rsvped = !!rsvp;
+      const lastName = guests[0].lastName || '(no last name)';
+      const submittedAt = rsvp ? rsvp.submittedAt : '';
+
+      for (const guest of guests) {
+        const rsvpGuest = rsvp ? rsvp.guests.find(g => g.guestId === guest.id) : null;
+        const responded = !!rsvpGuest;
+        const attending = rsvpGuest ? (rsvpGuest.attending ? 'Yes' : 'No') : 'Not Responded';
+        const meal = rsvpGuest && rsvpGuest.attending ? this._mealLabel(rsvpGuest.meal || '') : '';
+        const diet = rsvpGuest && rsvpGuest.attending ? (rsvpGuest.dietaryRestrictions || '') : '';
+        const email = rsvpGuest ? (rsvpGuest.email || '') : '';
+
+        rows.push([
+          hId,
+          lastName,
+          guest.firstName,
+          guest.ageGroup === 'adult' ? 'Adult' : 'Child',
+          rsvped ? 'Yes' : 'No',
+          attending,
+          meal,
+          diet,
+          email,
+          submittedAt,
+        ].map(v => this._escapeCsv(v)).join(','));
+      }
+    }
+
+    const csv = rows.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `rsvp-export-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    btn.disabled = false;
+    btn.textContent = originalText;
   },
 };
