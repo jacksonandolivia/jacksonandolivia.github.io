@@ -258,6 +258,7 @@ h2 {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .meal-group label {
@@ -268,6 +269,7 @@ h2 {
 
 .meal-select {
   flex: 1;
+  min-width: 150px;
   padding: 0.4rem 0.5rem;
   font-size: 0.9rem;
   border: 1px solid var(--color-border);
@@ -284,6 +286,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .diet-group label {
@@ -294,6 +297,7 @@ h2 {
 
 .diet-input {
   flex: 1;
+  min-width: 150px;
   padding: 0.4rem 0.5rem;
   font-size: 0.9rem;
   border: 1px solid var(--color-border);
@@ -306,6 +310,7 @@ h2 {
   align-items: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .email-group label {
@@ -316,6 +321,7 @@ h2 {
 
 .email-input {
   flex: 1;
+  min-width: 150px;
   padding: 0.4rem 0.5rem;
   font-size: 0.9rem;
   border: 1px solid var(--color-border);
@@ -612,4 +618,25 @@ h2 {
 .status-none {
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .meal-group,
+  .diet-group,
+  .email-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .meal-group label,
+  .diet-group label,
+  .email-group label {
+    margin-bottom: 0.4rem;
+  }
+
+  .meal-select,
+  .diet-input,
+  .email-input {
+    min-width: 100%;
+  }
 }
