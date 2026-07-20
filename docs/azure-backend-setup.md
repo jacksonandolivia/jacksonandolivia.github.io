@@ -155,7 +155,7 @@ Validates payload, upserts to Cosmos DB. Finds existing document by `householdId
 ```json
 {
   "householdId": 1,
-  "sitePassword": "wedding2025",
+  "sitePassword": "jjh-omw-ames-nov7",
   "guests": [
     {
       "guestId": 1,

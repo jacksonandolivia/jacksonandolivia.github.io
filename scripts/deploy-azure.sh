@@ -6,7 +6,7 @@
 #   ./scripts/deploy-azure.sh <password> [location]
 #
 # Example:
-#   ./scripts/deploy-azure.sh "wedding2025" centralus
+#   ./scripts/deploy-azure.sh "jjh-omw-ames-nov7" centralus
 #
 # Prerequisites:
 #   - Azure CLI (az) logged in with an active subscription

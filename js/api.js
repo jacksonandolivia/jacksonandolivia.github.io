@@ -25,12 +25,21 @@ const API = {
     return path;
   },
 
-  _getSitePassword() {
-    return this._config ? this._config.sitePassword : '';
+  async _hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   },
 
   async verifyPassword(password) {
-    return password === this._getSitePassword();
+    const hash = await this._hashPassword(password);
+    if (hash === this._config.sitePasswordHash) {
+      this._plainPassword = password;
+      return true;
+    }
+    return false;
   },
 
   async submitRSVP(payload) {
@@ -38,7 +47,7 @@ const API = {
       Storage.saveRSVP(payload.householdId, payload);
       return { ok: true };
     }
-    payload.sitePassword = this._getSitePassword();
+    payload.sitePassword = this._plainPassword;
     const resp = await fetch(this._apiUrl('/api/submit-rsvp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
