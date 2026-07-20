@@ -79,7 +79,7 @@ const Admin = {
       return;
     }
 
-    this.rsvps = await API.listRSVPs(this.config.sitePasswordHash);
+    this.rsvps = await API.listRSVPs(this.config.sitePassword);
   },
 
   _mealLabel(value) {

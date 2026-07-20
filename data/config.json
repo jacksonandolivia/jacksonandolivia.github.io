@@ -8,6 +8,7 @@
     { "value": "child-mac-cheese", "label": "Child Meal 2 - Mac & Cheese" }
   ],
   "apiBaseUrl": "https://wedding-rsvp-api-bbuoyk3ezmdfs.azurewebsites.net",
+  "sitePassword": "jjh-omw-ames-nov7",
   "sitePasswordHash": "ff337046c3ba9ed9264bb40906e1cf0b08c49db257d208838338a6f9d7f96ffd",
   "adminPasswordHash": "3a7de6ffdec6b2db3c5ab204c87279a8a91a91da877cc0c085c0b553538720df",
   "weddingDate": "2025-08-15",
