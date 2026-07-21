@@ -47,7 +47,7 @@ const API = {
       Storage.saveRSVP(payload.householdId, payload);
       return { ok: true };
     }
-    payload.sitePassword = this._plainPassword || this._config.sitePassword;
+    payload.sitePassword = this._plainPassword;
     const resp = await fetch(this._apiUrl('/api/submit-rsvp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

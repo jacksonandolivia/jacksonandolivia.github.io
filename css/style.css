@@ -105,6 +105,37 @@ h1 {
   box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.15);
 }
 
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+  padding-right: 2.5rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.password-toggle:hover {
+  color: var(--color-text);
+}
+
+
+
 .submit-btn {
   width: 100%;
   padding: 0.75rem;
