@@ -7,11 +7,11 @@ const API = {
   },
 
   isLocal() {
-    if (this._config && this._config.apiBaseUrl) {
-      return false;
-    }
     const host = window.location.hostname;
-    return host === 'localhost' || host === '127.0.0.1' || host === '';
+    if (host === 'localhost' || host === '127.0.0.1' || host === '') {
+      return true;
+    }
+    return false;
   },
 
   _apiUrl(path) {
