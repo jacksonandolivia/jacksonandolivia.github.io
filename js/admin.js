@@ -17,6 +17,7 @@ const Admin = {
   _setup() {
     document.getElementById('admin-login-form').addEventListener('submit', (e) => this._handleLogin(e));
     if (this._checkSession()) {
+      this._sitePassword = sessionStorage.getItem('wedding_admin_site_password') || '';
       this._showDashboard();
     }
   },
@@ -49,6 +50,7 @@ const Admin = {
       btn.disabled = false;
       btn.textContent = originalText;
       sessionStorage.setItem('wedding_admin_auth', 'true');
+      sessionStorage.setItem('wedding_admin_site_password', sitePassword);
       errorEl.hidden = true;
       this._showDashboard();
     } else {
@@ -292,6 +294,8 @@ const Admin = {
 
     document.getElementById('admin-logout-btn').addEventListener('click', () => {
       sessionStorage.removeItem('wedding_admin_auth');
+      sessionStorage.removeItem('wedding_admin_site_password');
+      this._sitePassword = '';
       document.getElementById('admin-dashboard').hidden = true;
       document.getElementById('admin-login-section').hidden = false;
       document.getElementById('admin-password').value = '';

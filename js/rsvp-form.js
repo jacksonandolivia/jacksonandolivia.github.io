@@ -262,13 +262,7 @@ const RSVPForm = {
       });
     }
 
-    if (!hasAttending) {
-      errorEl.textContent = 'Please select at least one guest to attend.';
-      errorEl.hidden = false;
-      return;
-    }
-
-    if (!hasEmail) {
+    if (hasAttending && !hasEmail) {
       errorEl.textContent = 'Please provide an email address for at least one attending guest.';
       errorEl.hidden = false;
       return;
