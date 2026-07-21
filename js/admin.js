@@ -37,6 +37,7 @@ const Admin = {
     e.preventDefault();
     const errorEl = document.getElementById('admin-login-error');
     const password = document.getElementById('admin-password').value;
+    const sitePassword = document.getElementById('admin-site-password').value;
     const btn = document.querySelector('#admin-login-form .submit-btn');
     const originalText = btn.textContent;
     btn.disabled = true;
@@ -44,6 +45,7 @@ const Admin = {
 
     const hash = await this._hashPassword(password);
     if (hash === this.config.adminPasswordHash) {
+      this._sitePassword = sitePassword;
       btn.disabled = false;
       btn.textContent = originalText;
       sessionStorage.setItem('wedding_admin_auth', 'true');
@@ -79,7 +81,7 @@ const Admin = {
       return;
     }
 
-    this.rsvps = await API.listRSVPs(this.config.sitePassword);
+    this.rsvps = await API.listRSVPs(this._sitePassword);
   },
 
   _mealLabel(value) {
