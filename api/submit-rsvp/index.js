@@ -7,7 +7,8 @@ const VALID_MEALS = [
   'child-hamburger',
   'child-mac-and-cheese',
   'child-chicken-strips',
-  'child-pizza',
+  'child-pizza-cheese',
+  'child-pizza-pepperoni',
   'child-peanut-butter-jelly',
 ];
 

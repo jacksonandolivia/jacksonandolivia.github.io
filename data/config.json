@@ -6,7 +6,8 @@
     { "value": "child-hamburger", "label": "(Child) Hamburger with Fries" },
     { "value": "child-mac-and-cheese", "label": "(Child) Mac & Cheese with Garlic Fries" },
     { "value": "child-chicken-strips", "label": "(Child) Chicken Strips with Fries" },
-    { "value": "child-pizza", "label": "(Child) Mini Cheese or Pepperoni Pizza" },
+    { "value": "child-pizza-cheese", "label": "(Child) Mini Cheese Pizza" },
+    { "value": "child-pizza-pepperoni", "label": "(Child) Mini Pepperoni Pizza" },
     { "value": "child-peanut-butter-jelly", "label": "(Child) Peanut Butter & Jelly Sandwich" }
   ],
   "apiBaseUrl": "https://wedding-rsvp-api-gxgqpye4chgds.azurewebsites.net",
