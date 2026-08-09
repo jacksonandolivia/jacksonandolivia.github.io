@@ -7,7 +7,7 @@
     { "value": "child-chicken-nuggets", "label": "Child Meal 1 - Chicken Nuggets" },
     { "value": "child-mac-cheese", "label": "Child Meal 2 - Mac & Cheese" }
   ],
-  "apiBaseUrl": "https://wedding-rsvp-api-bbuoyk3ezmdfs.azurewebsites.net",
+  "apiBaseUrl": "https://wedding-rsvp-api-gxgqpye4chgds.azurewebsites.net",
   "sitePasswordHash": "9bc7019ccf643299f55b7524ba74e6b6d1b3e223bb55bccac38897c654f52e79",
   "adminPasswordHash": "3a7de6ffdec6b2db3c5ab204c87279a8a91a91da877cc0c085c0b553538720df",
   "weddingDate": "2025-08-15",

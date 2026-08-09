@@ -65,8 +65,8 @@
       const input = btn.closest('.password-wrapper').querySelector('input');
       const isPassword = input.type === 'password';
       input.type = isPassword ? 'text' : 'password';
-      btn.querySelector('.eye-open').style.display = isPassword ? 'block' : 'none';
-      btn.querySelector('.eye-closed').style.display = isPassword ? 'none' : 'block';
+      btn.querySelector('.eye-open').style.display = isPassword ? 'none' : 'block';
+      btn.querySelector('.eye-closed').style.display = isPassword ? 'block' : 'none';
       btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
     }
   </script>

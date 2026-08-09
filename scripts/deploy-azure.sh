@@ -3,10 +3,10 @@
 # Deploy Wedding RSVP to Azure (full end-to-end)
 #
 # Usage:
-#   ./scripts/deploy-azure.sh <password> [location]
+#   ./scripts/deploy-azure.sh <password>
 #
 # Example:
-#   ./scripts/deploy-azure.sh "jjh-omw-ames-nov7" centralus
+#   ./scripts/deploy-azure.sh "jjh-omw-ames-nov7"
 #
 # Prerequisites:
 #   - Azure CLI (az) logged in with an active subscription
@@ -16,81 +16,71 @@
 
 set -euo pipefail
 
-PASSWORD="${1:?Usage: $0 <site-password> [location]}"
-LOCATION="${2:-centralus}"
+PASSWORD="${1:?Usage: $0 <site-password>}"
 RG_NAME="wedding-rsvp-rg"
+FUNCTION_APP="wedding-rsvp-api-gxgqpye4chgds"
+COSMOS_RG_NAME="wedding-rsvp-rg2"
+COSMOS_ACCOUNT="wedding-rsvp-cdb"
 API_DIR="$(cd "$(dirname "$0")/../api" && pwd)"
-INFRA_DIR="$(cd "$(dirname "$0")/../infra" && pwd)"
 
 echo "================================================"
 echo "  Wedding RSVP — Azure Deployment"
 echo "================================================"
 echo "Resource group:  $RG_NAME"
-echo "Location:        $LOCATION"
+echo "Function App:    $FUNCTION_APP"
 echo "Password:        [hidden]"
 echo ""
 
-# Step 1: Create resource group
-echo "==> [1/8] Creating resource group..."
-az group create --name "$RG_NAME" --location "$LOCATION" --output none
-
-# Step 2: Deploy infrastructure via Bicep
-echo "==> [2/8] Deploying infrastructure (Cosmos DB, Storage, Function App)..."
-az deployment group create \
+# Verify the existing app before deploying code.
+echo "==> Verifying existing Function App..."
+az functionapp show \
+  --name "$FUNCTION_APP" \
   --resource-group "$RG_NAME" \
-  --template-file "$INFRA_DIR/main.bicep" \
-  --parameters sitePassword="$PASSWORD" \
-  --parameters cosmosConnectionString="" \
-  --output none
+  --query name \
+  --output tsv > /dev/null
 
-# Get resource names from deployment outputs
-echo "==> [3/8] Capturing resource names..."
-OUTPUTS=$(az deployment group show \
-  --resource-group "$RG_NAME" \
-  --name main \
-  --query properties.outputs \
-  --output json)
-
-FUNCTION_APP=$(echo "$OUTPUTS" | jq -r '.functionAppName.value')
-COSMOS_ACCOUNT=$(echo "$OUTPUTS" | jq -r '.cosmosAccountName_out.value')
-
-echo "  Function App:  $FUNCTION_APP"
-echo "  Cosmos DB:     $COSMOS_ACCOUNT"
-
-# Step 4: Get Cosmos DB connection string
-echo "==> [4/8] Retrieving Cosmos DB connection string..."
+echo "==> Reading existing Cosmos DB connection string..."
 CONNECTION_STRING=$(az cosmosdb keys list \
   --name "$COSMOS_ACCOUNT" \
-  --resource-group "$RG_NAME" \
+  --resource-group "$COSMOS_RG_NAME" \
   --type connection-strings \
   --query "connectionStrings[0].connectionString" \
   --output tsv)
 
-# Step 5: Set connection string on Function App
-echo "==> [5/8] Setting Cosmos DB connection string on Function App..."
+if [ -z "$CONNECTION_STRING" ]; then
+  echo "ERROR: No connection string returned for $COSMOS_ACCOUNT in $COSMOS_RG_NAME." >&2
+  exit 1
+fi
+
+echo "==> Updating existing Function App settings..."
 az functionapp config appsettings set \
   --name "$FUNCTION_APP" \
   --resource-group "$RG_NAME" \
-  --settings COSMOS_CONNECTION_STRING="$CONNECTION_STRING" > /dev/null
+  --settings \
+    COSMOS_CONNECTION_STRING="$CONNECTION_STRING" \
+    SITE_PASSWORD="$PASSWORD" > /dev/null
 
-# Step 6: Install API dependencies and deploy code
-echo "==> [6/8] Installing API dependencies..."
+# Install API dependencies and deploy the complete API directory, including
+# api/clear-rsvps.
+echo "==> Installing API dependencies..."
 cd "$API_DIR"
-npm install --omit=dev --no-fund --no-audit > /dev/null 2>&1
+npm install --omit=dev --no-fund --no-audit
 
-echo "==> [7/8] Deploying API code..."
+echo "==> Deploying API code..."
 DEPLOY_ZIP="/tmp/wedding-rsvp-api-deploy.zip"
+cleanup() {
+  rm -f "$DEPLOY_ZIP"
+  rm -rf "$API_DIR/node_modules"
+}
+trap cleanup EXIT
 zip -r "$DEPLOY_ZIP" . -x "local.settings.json" -x "node_modules/.cache/*" > /dev/null
-az functionapp deploy \
+az functionapp deployment source config-zip \
   --name "$FUNCTION_APP" \
   --resource-group "$RG_NAME" \
-  --type zip \
-  --src-path "$DEPLOY_ZIP" > /dev/null
-rm -f "$DEPLOY_ZIP"
-rm -rf "$API_DIR/node_modules"
+  --src "$DEPLOY_ZIP"
 
-# Step 8: Configure CORS
-echo "==> [8/8] Configuring CORS..."
+# Configure CORS on the existing app.
+echo "==> Configuring CORS..."
 az functionapp cors add \
   --name "$FUNCTION_APP" \
   --resource-group "$RG_NAME" \

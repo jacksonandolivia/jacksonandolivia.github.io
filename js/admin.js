@@ -302,6 +302,27 @@ const Admin = {
     });
 
     document.getElementById('export-csv-btn').addEventListener('click', () => this._exportCSV());
+    document.getElementById('clear-rsvps-btn').addEventListener('click', () => this._clearRSVPs());
+  },
+
+  async _clearRSVPs() {
+    if (!confirm('Clear all RSVP responses? This cannot be undone.')) return;
+
+    const btn = document.getElementById('clear-rsvps-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Clearing...';
+
+    const result = await API.clearRSVPs(this._sitePassword);
+    if (!result.ok) {
+      alert(result.error || 'Unable to clear RSVP responses.');
+      btn.disabled = false;
+      btn.textContent = originalText;
+      return;
+    }
+
+    await this._loadRSVPs();
+    this._render();
   },
 
   _escapeCsv(val) {

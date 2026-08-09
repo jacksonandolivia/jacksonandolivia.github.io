@@ -97,7 +97,10 @@
 
       <div class="card">
         <h2>All Guests
-          <button id="export-csv-btn" class="export-btn">Export CSV</button>
+          <span class="admin-actions">
+            <button id="clear-rsvps-btn" class="clear-btn">Clear All Responses</button>
+            <button id="export-csv-btn" class="export-btn">Export CSV</button>
+          </span>
         </h2>
         <div class="table-wrap">
           <table id="admin-table">
@@ -128,8 +131,8 @@
       const input = btn.closest('.password-wrapper').querySelector('input');
       const isPassword = input.type === 'password';
       input.type = isPassword ? 'text' : 'password';
-      btn.querySelector('.eye-open').style.display = isPassword ? 'block' : 'none';
-      btn.querySelector('.eye-closed').style.display = isPassword ? 'none' : 'block';
+      btn.querySelector('.eye-open').style.display = isPassword ? 'none' : 'block';
+      btn.querySelector('.eye-closed').style.display = isPassword ? 'block' : 'none';
       btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
     }
   </script>

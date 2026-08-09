@@ -87,4 +87,26 @@ const API = {
       return {};
     }
   },
+
+  async clearRSVPs(adminPassword) {
+    if (this.isLocal()) {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('wedding_rsvp_')) {
+          localStorage.removeItem(key);
+        }
+      }
+      return { ok: true };
+    }
+
+    try {
+      const resp = await fetch(this._apiUrl('/api/clear-rsvps'), {
+        method: 'POST',
+        headers: { 'x-admin-password': adminPassword },
+      });
+      return resp.json();
+    } catch {
+      return { ok: false, error: 'Unable to clear RSVP responses.' };
+    }
+  },
 };

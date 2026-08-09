@@ -146,6 +146,7 @@ Edit `data/config.json` to switch modes:
 | POST | `/api/submit-rsvp` | `sitePassword` in body | Submit or update an RSVP |
 | GET | `/api/get-rsvp?householdId={id}` | None | Get RSVP for a household |
 | GET | `/api/list-rsvps` | `x-admin-password` header | List all RSVPs (admin) |
+| POST | `/api/clear-rsvps` | `x-admin-password` header | Clear all RSVPs (admin) |
 
 ### POST `/api/submit-rsvp`
 
@@ -182,6 +183,15 @@ Requires `x-admin-password` header set to the plaintext `SITE_PASSWORD` (not the
 **Response 200:**
 ```json
 { "ok": true, "rsvps": [{ "householdId": 1, "guests": [...], "submittedAt": "..." }] }
+```
+
+### POST `/api/clear-rsvps`
+
+Requires `x-admin-password` set to the plaintext `SITE_PASSWORD`. Deletes every RSVP document from the Cosmos DB `rsvps` container.
+
+**Response 200:**
+```json
+{ "ok": true, "deleted": 12 }
 ```
 
 Each guest includes: `guestId`, `firstName`, `lastName`, `ageGroup`, `attending`, `meal`, `dietaryRestrictions`, `email`.

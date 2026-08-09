@@ -590,6 +590,11 @@ h2 {
   justify-content: space-between;
 }
 
+.admin-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .export-btn {
   font-size: 0.8rem;
   padding: 0.35rem 0.8rem;
@@ -604,6 +609,22 @@ h2 {
 
 .export-btn:hover {
   background: var(--color-primary-dark);
+}
+
+.clear-btn {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid #b03a2e;
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: #b03a2e;
+  color: #fff;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.clear-btn:hover {
+  background: #922b21;
 }
 
 .admin-edit-checkbox {
