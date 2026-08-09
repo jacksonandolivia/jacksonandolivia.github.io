@@ -8,37 +8,48 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       margin: 0;
       font-family: "Spectral", serif;
       background: #F1E9D2;
       color: #1f1f1f;
-      padding: 1.5rem 1rem 3rem;
+      padding: 0;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
     }
-    .container { max-width: 56rem; width: 100%; }
-    h1 {
-      font-family: "Pinyon Script", cursive;
-      font-size: 3rem;
-      font-weight: 400;
-      margin: 0;
+    .container {
+      max-width: 56rem;
+      width: 100%;
+      padding: 2rem 1rem 3rem;
+    }
+    .hero {
+      width: 100%;
       text-align: center;
+      padding: 1rem;
+    }
+    .hero h1 {
+      font-family: "Pinyon Script", cursive;
+      font-size: 3.5rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
     }
     .hero-date {
-      margin-top: 0.35rem;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      text-align: center;
     }
     .countdown {
-      margin-top: 0.3rem;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      margin-top: 0.45rem;
       letter-spacing: 0.02em;
       text-transform: uppercase;
-      text-align: center;
     }
     h2 { margin-top: 0; }
     .navbar {
@@ -111,9 +122,11 @@
 </head>
 <body>
   <main class="container">
-    <h1>Jackson &amp; Olivia</h1>
-    <p class="hero-date">SATURDAY, NOVEMBER 7TH, 2026 • AMES, IOWA</p>
-    <p class="countdown" id="countdown-text"></p>
+    <div class="hero">
+      <h1>Jackson &amp; Olivia</h1>
+      <p class="hero-date">SATURDAY, NOVEMBER 7TH, 2026 • AMES, IOWA</p>
+      <p class="countdown" id="countdown-text"></p>
+    </div>
     <nav class="navbar" aria-label="Wedding menu">
       <ul>
         <li><a href="/">Home</a></li>
