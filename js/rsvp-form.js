@@ -298,10 +298,12 @@ const RSVPForm = {
 
     try {
       await API.submitRSVP(payload);
-    } catch {
+    } catch (error) {
       submitBtn.disabled = false;
       submitBtn.textContent = originalText;
-      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.textContent = error instanceof Error && error.message
+        ? error.message
+        : 'Something went wrong. Please try again.';
       errorEl.hidden = false;
       return;
     }
@@ -347,7 +349,6 @@ const RSVPForm = {
     summaryHtml += `
         <p>You can return here to update your response before the deadline.</p>
         <button id="edit-rsvp-btn" class="submit-btn">Edit RSVP</button>
-        <button id="new-rsvp-btn" class="logout-btn">Submit Another RSVP</button>
         <a href="/" id="home-btn" class="logout-btn" style="text-decoration:none;">Return to Home</a>
       </div>
     `;
@@ -356,12 +357,6 @@ const RSVPForm = {
 
     document.getElementById('edit-rsvp-btn').addEventListener('click', () => {
       this.render(container);
-    });
-
-    document.getElementById('new-rsvp-btn').addEventListener('click', () => {
-      this.currentHousehold = null;
-      this.currentLastName = null;
-      App.showLookup();
     });
 
   },

@@ -46,7 +46,7 @@ VALID_PAYLOAD = {
             "lastName": "Wikle",
             "ageGroup": "adult",
             "attending": True,
-            "meal": "chicken",
+            "meal": "chicken-piccata",
             "dietaryRestrictions": "",
         },
         {
@@ -55,7 +55,7 @@ VALID_PAYLOAD = {
             "lastName": "Wikle",
             "ageGroup": "adult",
             "attending": True,
-            "meal": "fish",
+            "meal": "sirloin-filet-demi-glace",
             "dietaryRestrictions": "No garlic",
         },
     ],

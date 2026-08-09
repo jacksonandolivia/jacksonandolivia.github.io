@@ -53,7 +53,11 @@ const API = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    return resp.json();
+    const result = await resp.json();
+    if (!resp.ok || result.ok === false) {
+      throw new Error(result.error || `Unable to submit RSVP (${resp.status}).`);
+    }
+    return result;
   },
 
   async listRSVPs(adminPassword) {

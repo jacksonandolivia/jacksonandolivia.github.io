@@ -6,7 +6,7 @@
 #   ./scripts/deploy-azure.sh <password>
 #
 # Example:
-#   ./scripts/deploy-azure.sh "jjh-omw-ames-nov7"
+#   ./scripts/deploy-azure.sh "YOURPASSWORDHERE"
 #
 # Prerequisites:
 #   - Azure CLI (az) logged in with an active subscription
@@ -101,7 +101,7 @@ echo ""
 echo "To test the API:"
 echo "  curl -s https://${FUNCTION_APP}.azurewebsites.net/api/submit-rsvp \\"
 echo "    -H 'Content-Type: application/json' \\"
-echo "    -d '{\"sitePassword\":\"${PASSWORD}\",\"householdId\":1,\"guests\":[{\"guestId\":1,\"firstName\":\"Test\",\"lastName\":\"User\",\"attending\":true,\"meal\":\"chicken\"}]}'"
+echo "    -d '{\"sitePassword\":\"${PASSWORD}\",\"householdId\":1,\"guests\":[{\"guestId\":1,\"firstName\":\"Test\",\"lastName\":\"User\",\"attending\":true,\"meal\":\"chicken-piccata\"}]}'"
 echo ""
 echo "To clean up and delete everything:"
 echo "  az group delete --name $RG_NAME --yes"
