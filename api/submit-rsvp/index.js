@@ -66,6 +66,7 @@ module.exports = async function (context, req) {
         attending: g.attending,
         meal: g.attending ? g.meal : null,
         dietaryRestrictions: g.dietaryRestrictions || '',
+        email: g.email || '',
       })),
       submittedAt: now,
     };

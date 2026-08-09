@@ -11,7 +11,7 @@
   ],
   "apiBaseUrl": "https://wedding-rsvp-api-gxgqpye4chgds.azurewebsites.net",
   "sitePasswordHash": "9bc7019ccf643299f55b7524ba74e6b6d1b3e223bb55bccac38897c654f52e79",
-  "adminPasswordHash": "3a7de6ffdec6b2db3c5ab204c87279a8a91a91da877cc0c085c0b553538720df",
+  "adminPasswordHash": "b9de187f05fb235cc36359538da2374102980ed0ca603f80952e90af257f1bfa",
   "weddingDate": "2025-08-15",
   "rsvpDeadline": "2025-07-15"
 }

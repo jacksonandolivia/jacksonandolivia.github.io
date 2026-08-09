@@ -2,16 +2,12 @@ const API = {
   _config: null,
 
   async init() {
-    const resp = await fetch('/data/config.json');
+    const resp = await fetch('/data/config.json?v=admin-password-20260809');
     this._config = await resp.json();
   },
 
   isLocal() {
-    if (this._config && this._config.apiBaseUrl) {
-      return false;
-    }
-    const host = window.location.hostname;
-    return host === 'localhost' || host === '127.0.0.1' || host === '';
+    return !this._config || !this._config.apiBaseUrl;
   },
 
   _apiUrl(path) {
@@ -42,12 +38,12 @@ const API = {
     return false;
   },
 
-  async submitRSVP(payload) {
+  async submitRSVP(payload, sitePassword) {
     if (this.isLocal()) {
       Storage.saveRSVP(payload.householdId, payload);
       return { ok: true };
     }
-    payload.sitePassword = this._plainPassword;
+    payload.sitePassword = sitePassword || this._plainPassword;
     const resp = await fetch(this._apiUrl('/api/submit-rsvp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -79,16 +75,16 @@ const API = {
         headers: { 'x-admin-password': adminPassword },
       });
       const data = await resp.json();
-      if (data.ok) {
-        const rsvps = {};
-        for (const r of data.rsvps) {
-          rsvps[r.householdId] = r;
-        }
-        return rsvps;
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || `Unable to load RSVP responses (${resp.status}).`);
       }
-      return {};
-    } catch {
-      return {};
+      const rsvps = {};
+      for (const r of data.rsvps) {
+        rsvps[r.householdId] = r;
+      }
+      return rsvps;
+    } catch (error) {
+      throw error;
     }
   },
 

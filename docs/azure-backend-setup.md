@@ -236,6 +236,27 @@ Use `scripts/query-cosmos.sh` to view all RSVPs from the CLI:
 ./scripts/query-cosmos.sh
 ```
 
+## Exporting RSVPs on a Loop
+
+Use `scripts/poll-rsvps.py` to fetch the latest responses and keep a CSV file
+updated whenever a response is added or changed. The script authenticates with
+the plaintext site password required by `/api/list-rsvps`.
+
+```bash
+export SITE_PASSWORD="your-site-password"
+export API_BASE_URL="https://{app}.azurewebsites.net"
+python3 scripts/poll-rsvps.py --output rsvp-export.csv --interval 60
+```
+
+To export once and exit:
+
+```bash
+python3 scripts/poll-rsvps.py --once --output rsvp-export.csv
+```
+
+The CSV contains one row per guest, including household ID, submission time,
+attendance, meal, dietary restrictions, and email.
+
 ---
 
 ## Environment Variables

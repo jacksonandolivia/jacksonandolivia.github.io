@@ -28,6 +28,7 @@ module.exports = async function (context, req) {
         attending: g.attending,
         meal: g.meal,
         dietaryRestrictions: g.dietaryRestrictions,
+        email: g.email,
       })),
     }));
 
