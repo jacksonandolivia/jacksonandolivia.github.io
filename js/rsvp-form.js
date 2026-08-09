@@ -32,6 +32,11 @@ const RSVPForm = {
     container.innerHTML = '';
     const existing = Storage.getRSVP(this.currentHousehold[0].householdId);
 
+    const mealOptionsTemplate = document.getElementById('meal-options-template');
+    if (mealOptionsTemplate) {
+      container.appendChild(mealOptionsTemplate.content.cloneNode(true));
+    }
+
     const form = document.createElement('form');
     form.id = 'rsvp-form';
     form.noValidate = true;
@@ -202,6 +207,17 @@ const RSVPForm = {
     errorMsg.className = 'error-msg';
     errorMsg.hidden = true;
     form.appendChild(errorMsg);
+
+    const contactBox = document.createElement('aside');
+    contactBox.className = 'contact-box';
+    contactBox.append('If you have any questions, please email us at ');
+
+    const emailLink = document.createElement('a');
+    emailLink.href = 'mailto:WikleHayesWeddingRSVP@proton.me';
+    emailLink.textContent = 'WikleHayesWeddingRSVP@proton.me';
+    contactBox.appendChild(emailLink);
+
+    form.appendChild(contactBox);
 
     form.addEventListener('submit', (e) => this._handleSubmit(e));
 
