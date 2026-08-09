@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jackson & Olivia | Wedding</title>
+  <title>Schedule | Jackson & Olivia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -14,9 +14,10 @@
       padding: 0;
     }
     body {
+      margin: 0;
       font-family: "Spectral", serif;
       background: #F1E9D2;
-      color: black;
+      color: #1f1f1f;
       padding: 0;
       min-height: 100vh;
       display: flex;
@@ -33,20 +34,6 @@
       text-align: center;
       padding: 1rem;
     }
-    .photo-details {
-      margin-top: 1.2rem;
-      text-align: center;
-    }
-    .hero-photo {
-      width: 100%;
-      max-width: 48rem;
-      max-height: 32rem;
-      object-fit: contain;
-      object-position: center;
-      border-radius: 0.2rem;
-      margin: 0 auto 1.6rem;
-      display: block;
-    }
     .hero h1 {
       font-family: "Pinyon Script", cursive;
       font-size: 3.5rem;
@@ -62,58 +49,13 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
-    .event-meta {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      max-width: 38rem;
-      margin: 0 auto;
-      gap: 1rem;
-      font-size: 1.55rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .event-meta p {
-      margin: 0;
-      line-height: 1.25;
-    }
-    .event-meta .left {
-      text-align: right;
-    }
-    .event-meta .right {
-      text-align: left;
-    }
-    .event-divider {
-      width: 1px;
-      height: 5.4rem;
-      background: #8a8a8a;
-    }
     .countdown {
       font-size: 0.95rem;
       margin-top: 0.45rem;
       letter-spacing: 0.02em;
       text-transform: uppercase;
     }
-    .rsvp-cta {
-      display: flex;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-    .rsvp-cta a {
-      text-decoration: none;
-      color: #fff;
-      background: #1f1b24;
-      padding: 0.42rem 1rem;
-      border-radius: 0.1rem;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
-    }
-    .rsvp-cta a:hover,
-    .rsvp-cta a:focus-visible {
-      background: #0f0c12;
-    }
+    h2 { margin-top: 0; }
     .navbar {
       margin: 1rem 0 1.5rem;
       border-top: 1px solid #6b7687;
@@ -122,6 +64,8 @@
     }
     .navbar ul {
       list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -138,41 +82,83 @@
     .navbar a:focus-visible {
       text-decoration: underline;
     }
-    .wedding-day {
-      margin-top: 1.7rem;
-      text-align: center;
+    .content-section {
+      width: min(60rem, 100%);
+      margin: 0.6rem auto 0;
     }
-    .wedding-day h2 {
-      font-size: 2rem;
+    .schedule-list {
+      margin-top: 0.4rem;
+      border-top: 1px solid rgba(107, 118, 135, 0.5);
+    }
+    .schedule-event {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      align-items: start;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(107, 118, 135, 0.4);
+    }
+    .event-photo {
+      width: 100%;
+      border-radius: 0.45rem;
+      max-height: 20rem;
+      object-fit: cover;
+    }
+    .event-kicker {
+      font-size: 0.82rem;
+      text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 0.3rem;
-      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      color: #445363;
     }
-    .wedding-day p {
-      font-size: 1rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .event-title {
+      font-size: 2rem;
+      margin: 0 0 0.4rem;
+      line-height: 1.1;
     }
-    @media (max-width: 680px) {
-      .event-meta {
-        grid-template-columns: 1fr;
-        gap: 0.45rem;
-        font-size: 1.2rem;
+    .event-time {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.85rem;
+    }
+    .event-location {
+      font-size: 1.08rem;
+      font-style: italic;
+      margin-top: 0.6rem;
+      margin-bottom: 0.25rem;
+    }
+    .event-address {
+      margin-bottom: 0.5rem;
+    }
+    .event-address a,
+    .actions a {
+      color: inherit;
+      text-underline-offset: 2px;
+    }
+    .event-note {
+      margin-top: 0.45rem;
+      color: #344150;
+    }
+    @media (min-width: 900px) {
+      .schedule-event {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.7rem;
       }
-      .event-meta .left,
-      .event-meta .right {
-        text-align: center;
+      .schedule-event.reverse .event-media {
+        order: 2;
       }
-      .event-divider {
-        width: 4rem;
-        height: 1px;
-        justify-self: center;
+      .schedule-event.reverse .event-content {
+        order: 1;
+      }
+      .event-content {
+        border-left: 1px solid #6b7687;
+        padding-left: 1.4rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <div class="hero">
       <h1><a href="/">Jackson &amp; Olivia</a></h1>
       <p class="hero-date">SATURDAY, NOVEMBER 7TH, 2026 • AMES, IOWA</p>
@@ -188,16 +174,37 @@
         <li><a href="/RSVP/">RSVP</a></li>
       </ul>
     </nav>
-    <section class="photo-details" aria-label="Wedding photo and details">
-      <img class="hero-photo" src="/images/jando_gnome_web.jpeg" alt="Jackson and Olivia photo">
-      <div class="event-meta" aria-label="Wedding date and location">
-        <p class="left">NOVEMBER<br>7, 2026</p>
-        <span class="event-divider" aria-hidden="true"></span>
-        <p class="right">AMES<br>IOWA</p>
-      </div>
-      <p class="rsvp-cta"><a href="/RSVP/">RSVP</a></p>
+
+    <section class="content-section schedule-list" aria-label="Wedding day schedule">
+      <article class="schedule-event">
+        <div class="event-media">
+          <img class="event-photo" src="/images/sta-ames.jpeg" alt="St. Thomas Aquinas Church exterior">
+        </div>
+        <div class="event-content">
+          <p class="event-kicker">Saturday, November 7, 2026</p>
+          <h2 class="event-title">Wedding Mass</h2>
+          <p class="event-time">2:00 pm - 3:00 pm</p>
+          <p class="event-location">St Thomas Aquinas Church:</p>
+          <p class="event-address"><a href="https://maps.app.goo.gl/2D2PLPyJyNzjk1QF8" target="_blank" rel="noopener">2210 Lincoln Way, Ames, Iowa 50014</a></p>
+        </div>
+      </article>
+
+      <article class="schedule-event reverse">
+        <div class="event-media">
+          <img class="event-photo" src="/images/gateway.jpg" alt="Gateway Hotel in Ames">
+        </div>
+        <div class="event-content">
+          <p class="event-kicker">After Mass</p>
+          <h2 class="event-title">Reception</h2>
+          <p class="event-time">5:00 pm</p>
+          <p>Join us for drinks beginning at 5:00 pm. Dinner will be served at 6:00 pm, followed by an evening of celebration.</p>
+          <p class="event-location">Garden Room, Gateway Hotel &amp; Conference Center:</p>
+          <p class="event-address"><a href="https://maps.app.goo.gl/aQt6Zr1FHnvyhM6V6" target="_blank" rel="noopener">2100 Green Hills Drive, Ames, Iowa 50014</a></p>
+          <p class="event-note">Need ideas for what to do between events? Visit <a href="/things-to-do-in-ames/">Things to do in Ames</a>.</p>
+        </div>
+      </article>
     </section>
-  </div>
+  </main>
   <script>
     (function () {
       var countdownEl = document.getElementById('countdown-text');
