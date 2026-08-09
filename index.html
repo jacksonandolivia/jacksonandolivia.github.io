@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wedding Site</title>
+  <title>Jackson & Olivia | Wedding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -15,7 +15,6 @@
     }
     body {
       font-family: "Spectral", serif;
-      /* background: #6b7687; */
       background: #F1E9D2;
       color: black;
       padding: 0;
@@ -25,13 +24,28 @@
       align-items: center;
     }
     .container {
-      max-width: 64rem;
+      max-width: 56rem;
       width: 100%;
+      padding: 2rem 1rem 3rem;
     }
     .hero {
       width: 100%;
       text-align: center;
-      padding: 3rem 1rem;
+      padding: 1rem;
+    }
+    .photo-details {
+      margin-top: 1.2rem;
+      text-align: center;
+    }
+    .hero-photo {
+      width: 100%;
+      max-width: 48rem;
+      max-height: 32rem;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 0.2rem;
+      margin: 0 auto 1.6rem;
+      display: block;
     }
     .hero h1 {
       font-family: "Pinyon Script", cursive;
@@ -39,87 +53,116 @@
       font-weight: 400;
       margin-bottom: 0.5rem;
     }
-    .hero p {
-      font-size: 1.25rem;
-      margin: 0.25rem 0;
+    .hero-date {
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
-    .grid {
+    .event-meta {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-    .square {
-      aspect-ratio: 1 / 1;
-      display: flex;
-      flex-direction: column;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
+      max-width: 38rem;
+      margin: 0 auto;
+      gap: 1rem;
+      font-size: 1.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .event-meta p {
+      margin: 0;
+      line-height: 1.25;
+    }
+    .event-meta .left {
+      text-align: right;
+    }
+    .event-meta .right {
+      text-align: left;
+    }
+    .event-divider {
+      width: 1px;
+      height: 5.4rem;
+      background: #8a8a8a;
+    }
+    .countdown {
+      font-size: 0.95rem;
+      margin-top: 0.45rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .rsvp-cta {
+      display: flex;
       justify-content: center;
-      text-align: center;
-      font-size: 2rem;
+      margin-top: 1rem;
+    }
+    .rsvp-cta a {
+      text-decoration: none;
+      color: #fff;
+      background: #1f1b24;
+      padding: 0.42rem 1rem;
+      border-radius: 0.1rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       font-weight: 600;
-      background-size: cover;
-      background-position: center;
-      padding: 1rem;
-      position: relative;
-      color: white;
-      min-height: 0;
-      overflow: hidden;
-      margin:5px;
     }
-    @media (max-width: 767px) {
-      .square {
-        font-size: 1.2rem;
-        padding: 0.5rem;
-      }
+    .rsvp-cta a:hover,
+    .rsvp-cta a:focus-visible {
+      background: #0f0c12;
     }
-    .square::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+    .navbar {
+      margin: 1rem 0 1.5rem;
+      border-top: 1px solid #6b7687;
+      border-bottom: 1px solid #6b7687;
+      padding: 0.65rem 0;
     }
-    .square > * {
-      position: relative;
-      z-index: 1;
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.9rem 1.4rem;
     }
-    .square a {
+    .navbar a {
       color: inherit;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3em;
-      font-size: clamp(0.65rem, 1.5vw, 0.9rem);
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-underline-offset: 0.2rem;
     }
-    .square a:hover {
+    .navbar a:hover,
+    .navbar a:focus-visible {
       text-decoration: underline;
     }
-    .square-grid {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      z-index: 1;
+    .wedding-day {
+      margin-top: 1.7rem;
+      text-align: center;
     }
-    .square-grid::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+    .wedding-day h2 {
+      font-size: 2rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
     }
-    .square-grid > div {
-      background-size: cover;
-      background-position: center;
+    .wedding-day p {
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
-    @media (min-width: 768px) {
-      body {
-        padding: 0;
+    @media (max-width: 680px) {
+      .event-meta {
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+        font-size: 1.2rem;
       }
-      .container {
-        max-width: 100rem;
+      .event-meta .left,
+      .event-meta .right {
+        text-align: center;
       }
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
+      .event-divider {
+        width: 4rem;
+        height: 1px;
+        justify-self: center;
       }
     }
   </style>
@@ -128,52 +171,47 @@
   <div class="container">
     <div class="hero">
       <h1>Jackson &amp; Olivia</h1>
-      <p>November 7th, 2026</p>
-      <p>Ames Iowa</p>
-      <br>
-      <p><a href="/RSVP/">RSVP</a></p>
+      <p class="hero-date">SATURDAY, NOVEMBER 7TH, 2026 • AMES, IOWA</p>
+      <p class="countdown" id="countdown-text"></p>
     </div>
-    <div class="grid">
-      <div class="square" style="background-image: url(images/sta_outside.jpeg)">
-        <p>Mass</p>
-        <p>St. Thomas Aquinas Church</p>
-        <p>
-          <a href="https://maps.app.goo.gl/2D2PLPyJyNzjk1QF8" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            2210 Lincoln Way | Ames, Iowa 50014
-          </a>
-        </p>
+    <nav class="navbar" aria-label="Wedding menu">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/schedule/">Schedule</a></li>
+        <li><a href="/accommodations/">Accommodations</a></li>
+        <li><a href="/registry/">Registry</a></li>
+        <li><a href="/things-to-do-in-ames/">Things to do in Ames</a></li>
+        <li><a href="/RSVP/">RSVP</a></li>
+      </ul>
+    </nav>
+    <section class="photo-details" aria-label="Wedding photo and details">
+      <img class="hero-photo" src="/images/jando_gnome_web.jpeg" alt="Jackson and Olivia photo">
+      <div class="event-meta" aria-label="Wedding date and location">
+        <p class="left">NOVEMBER<br>7, 2026</p>
+        <span class="event-divider" aria-hidden="true"></span>
+        <p class="right">AMES<br>IOWA</p>
       </div>
-      <div class="square" style="background-image: url(images/gateway.jpg)">
-        <p>Reception and Hotel</p>
-        <p>Gateway Hotel</p>
-        <p>
-          <a href="https://maps.app.goo.gl/aQt6Zr1FHnvyhM6V6" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            2100 Green Hills Dr | Ames, Iowa 50014
-          </a>
-        </p>
-        <p>
-          <a href="https://www.gatewayames.com/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-            Book a Room
-          </a>
-        </p>
-      </div>
-      
-      <div class="square">
-        <div class="square-grid">
-          <div style="background-image: url(images/tent.jpg)"></div>
-          <div style="background-image: url(images/bread.jpg)"></div>
-          <div style="background-image: url(images/baking.jpg)"></div>
-          <div style="background-image: url(images/hiking.jpg)"></div>
-        </div>
-        <p>Registry</p>
-      </div>
-      <div class="square" style="background-image: url(images/amesdowntown.jpg)">
-        <p>What to do in Ames?</p>
-      </div>
-    </div>
+      <p class="rsvp-cta"><a href="/RSVP/">RSVP</a></p>
+    </section>
   </div>
+  <script>
+    (function () {
+      var countdownEl = document.getElementById('countdown-text');
+      var eventDate = new Date('2026-11-07T00:00:00');
+      var now = new Date();
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var targetDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+      var millisecondsPerDay = 1000 * 60 * 60 * 24;
+      var daysRemaining = Math.ceil((targetDay - today) / millisecondsPerDay);
+
+      if (daysRemaining > 0) {
+        countdownEl.textContent = daysRemaining + ' DAYS TO GO!';
+      } else if (daysRemaining === 0) {
+        countdownEl.textContent = 'TODAY IS THE BIG DAY!';
+      } else {
+        countdownEl.textContent = 'WE SAID "I DO"!';
+      }
+    })();
+  </script>
 </body>
 </html>

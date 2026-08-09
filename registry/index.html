@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registry | Jackson & Olivia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Spectral", serif;
+      background: #F1E9D2;
+      color: #1f1f1f;
+      padding: 1.5rem 1rem 3rem;
+      display: flex;
+      justify-content: center;
+    }
+    .container { max-width: 56rem; width: 100%; }
+    h1 {
+      font-family: "Pinyon Script", cursive;
+      font-size: 3rem;
+      font-weight: 400;
+      margin: 0;
+      text-align: center;
+    }
+    .hero-date {
+      margin-top: 0.35rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .countdown {
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    h2 { margin-top: 0; }
+    .navbar {
+      margin: 1rem 0 1.5rem;
+      border-top: 1px solid #6b7687;
+      border-bottom: 1px solid #6b7687;
+      padding: 0.65rem 0;
+    }
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.9rem 1.4rem;
+    }
+    .navbar a {
+      color: inherit;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-underline-offset: 0.2rem;
+    }
+    .navbar a:hover,
+    .navbar a:focus-visible {
+      text-decoration: underline;
+    }
+    .content-section {
+      margin-top: 0.5rem;
+      padding-top: 1.1rem;
+      width: min(64rem, calc(100vw - 2rem));
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .split-layout {
+      display: grid;
+      gap: 1.4rem;
+      align-items: start;
+    }
+    .info-column h2 {
+      margin: 0 0 0.65rem;
+    }
+    .info-column p {
+      margin: 0 0 0.7rem;
+    }
+    .hero-image {
+      width: 100%;
+      border-radius: 0.5rem;
+      margin: 0;
+      max-height: 24rem;
+      object-fit: cover;
+    }
+    ul {
+      padding-left: 1.2rem;
+      margin-top: 0.3rem;
+    }
+    @media (min-width: 900px) {
+      .split-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.6rem;
+      }
+      .info-column {
+        border-left: 1px solid #6b7687;
+        padding-left: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Jackson &amp; Olivia</h1>
+    <p class="hero-date">SATURDAY, NOVEMBER 7TH, 2026 • AMES, IOWA</p>
+    <p class="countdown" id="countdown-text"></p>
+    <nav class="navbar" aria-label="Wedding menu">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/schedule/">Schedule</a></li>
+        <li><a href="/accommodations/">Accommodations</a></li>
+        <li><a href="/registry/">Registry</a></li>
+        <li><a href="/things-to-do-in-ames/">Things to do in Ames</a></li>
+        <li><a href="/RSVP/">RSVP</a></li>
+      </ul>
+    </nav>
+
+    <section class="content-section split-layout">
+      <div class="media-column">
+        <img class="hero-image" src="/images/tent.jpg" alt="Camping tent and trees">
+      </div>
+      <div class="info-column">
+        <h2>Registry</h2>
+        <p>We are grateful for your support and are still finalizing registry details.</p>
+        <p>Registry links will be added here soon. In the meantime, your presence at our wedding is the best gift.</p>
+        <ul>
+          <li>Check back for online registry links.</li>
+          <li>Gifts are optional and appreciated.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var countdownEl = document.getElementById('countdown-text');
+      var eventDate = new Date('2026-11-07T00:00:00');
+      var now = new Date();
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var targetDay = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+      var millisecondsPerDay = 1000 * 60 * 60 * 24;
+      var daysRemaining = Math.ceil((targetDay - today) / millisecondsPerDay);
+
+      if (daysRemaining > 0) {
+        countdownEl.textContent = daysRemaining + ' DAYS TO GO!';
+      } else if (daysRemaining === 0) {
+        countdownEl.textContent = 'TODAY IS THE BIG DAY!';
+      } else {
+        countdownEl.textContent = 'WE SAID "I DO"!';
+      }
+    })();
+  </script>
+</body>
+</html>
