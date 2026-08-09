@@ -57,7 +57,7 @@ const App = {
     }
   },
 
-  _handleLookup(e) {
+  async _handleLookup(e) {
     e.preventDefault();
     const errorEl = document.getElementById('lookup-error');
     const firstName = document.getElementById('lookup-firstname').value;
@@ -78,7 +78,7 @@ const App = {
 
     errorEl.hidden = true;
     const container = document.getElementById('rsvp-container');
-    RSVPForm.render(container);
+    await RSVPForm.render(container);
   },
 
   _handleLogout() {

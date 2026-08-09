@@ -69,11 +69,10 @@ The `.spinner` element (defined in `style.css`) renders a rotating CSS animation
 
 - Guests stored in `/data/guests.json` — array of objects with `id`, `firstName`, `lastName`, `ageGroup`, `householdId`
 - Config stored in `/data/config.json` — mealOptions, apiBaseUrl, sitePasswordHash, adminPasswordHash, weddingDate, rsvpDeadline
-- RSVP submissions stored via `API` module (localStorage locally, REST API in production)
+- RSVP submissions stored via the `API` module in the Azure REST API
 
 ## API Module (`js/api.js`)
 
-- Detects local vs production via `isLocal()`
-- Local: reads/writes localStorage with keys `wedding_rsvp_{householdId}`
-- Production: sends requests to `apiBaseUrl` with stored plain-text password for auth
+- Reads and writes RSVP data through the Azure REST API at `apiBaseUrl`
+- The browser does not cache RSVP submissions; login session state remains in `sessionStorage`
 - Password verification: entered password is SHA-256 hashed and compared with `sitePasswordHash` from config

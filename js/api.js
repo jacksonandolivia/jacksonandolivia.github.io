@@ -6,19 +6,9 @@ const API = {
     this._config = await resp.json();
   },
 
-  isLocal() {
-    return !this._config || !this._config.apiBaseUrl;
-  },
-
   _apiUrl(path) {
     const base = this._config && this._config.apiBaseUrl;
-    if (base) {
-      return base + path;
-    }
-    if (this.isLocal()) {
-      return path;
-    }
-    return path;
+    return base ? base + path : path;
   },
 
   async _hashPassword(password) {
@@ -39,10 +29,6 @@ const API = {
   },
 
   async submitRSVP(payload, sitePassword) {
-    if (this.isLocal()) {
-      Storage.saveRSVP(payload.householdId, payload);
-      return { ok: true };
-    }
     payload.sitePassword = sitePassword || this._plainPassword;
     const resp = await fetch(this._apiUrl('/api/submit-rsvp'), {
       method: 'POST',
@@ -56,20 +42,17 @@ const API = {
     return result;
   },
 
-  async listRSVPs(adminPassword) {
-    if (this.isLocal()) {
-      const rsvps = {};
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('wedding_rsvp_')) {
-          const householdId = parseInt(key.replace('wedding_rsvp_', ''), 10);
-          try {
-            rsvps[householdId] = JSON.parse(localStorage.getItem(key));
-          } catch {}
-        }
-      }
-      return rsvps;
+  async getRSVP(householdId) {
+    const resp = await fetch(this._apiUrl(`/api/get-rsvp?householdId=${encodeURIComponent(householdId)}`));
+    if (resp.status === 404) return null;
+    const data = await resp.json();
+    if (!resp.ok || !data.ok) {
+      throw new Error(data.error || `Unable to load RSVP (${resp.status}).`);
     }
+    return data.rsvp;
+  },
+
+  async listRSVPs(adminPassword) {
     try {
       const resp = await fetch(this._apiUrl('/api/list-rsvps'), {
         headers: { 'x-admin-password': adminPassword },
@@ -89,16 +72,6 @@ const API = {
   },
 
   async clearRSVPs(adminPassword) {
-    if (this.isLocal()) {
-      for (let i = localStorage.length - 1; i >= 0; i--) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('wedding_rsvp_')) {
-          localStorage.removeItem(key);
-        }
-      }
-      return { ok: true };
-    }
-
     try {
       const resp = await fetch(this._apiUrl('/api/clear-rsvps'), {
         method: 'POST',

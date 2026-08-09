@@ -114,7 +114,7 @@ jacksonandolivia.github.io/
 └── docs/                   Documentation
 ```
 
-### Local Testing
+### RSVP Data Behavior
 
 ```bash
 python3 -m http.server 8000
@@ -126,16 +126,14 @@ python3 -m http.server 8000
 | `http://localhost:8000/RSVP/` | Guest RSVP |
 | `http://localhost:8000/admin/` | Admin dashboard |
 
-### Dual-Mode Operation
+### Local Testing
 
-The frontend's `api.js` `isLocal()` check determines the mode:
+The frontend uses the Azure Functions API for RSVP reads and writes, including when
+the static site is served from `localhost`. The browser does not cache RSVP data.
+The login session is still kept in `sessionStorage` for the current browser session.
 
-- **`apiBaseUrl` empty + localhost host** → localStorage (no API calls)
-- **`apiBaseUrl` set** → all requests go to the Azure Functions API
-
-Edit `data/config.json` to switch modes:
-- Set `apiBaseUrl` to `""` for localStorage-only mode
-- Set `apiBaseUrl` to the Azure Functions URL for live API mode
+The `apiBaseUrl` value in `data/config.json` selects the Azure Functions API used by
+the frontend.
 
 ---
 

@@ -66,20 +66,6 @@ const Admin = {
   },
 
   async _loadRSVPs() {
-    if (API.isLocal()) {
-      this.rsvps = {};
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('wedding_rsvp_')) {
-          const householdId = parseInt(key.replace('wedding_rsvp_', ''), 10);
-          try {
-            this.rsvps[householdId] = JSON.parse(localStorage.getItem(key));
-          } catch {}
-        }
-      }
-      return;
-    }
-
     this.rsvps = await API.listRSVPs(this._sitePassword);
   },
 
@@ -95,10 +81,7 @@ const Admin = {
   },
 
   async _saveRSVP(householdId, rsvpData) {
-    if (!API.isLocal()) {
-      await API.submitRSVP(rsvpData);
-    }
-    localStorage.setItem(`wedding_rsvp_${householdId}`, JSON.stringify(rsvpData));
+    await API.submitRSVP(rsvpData, this._sitePassword);
     this.rsvps[householdId] = rsvpData;
     this._render();
   },

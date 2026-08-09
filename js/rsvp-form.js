@@ -28,9 +28,9 @@ const RSVPForm = {
     return household;
   },
 
-  render(container) {
+  async render(container) {
     container.innerHTML = '';
-    const existing = Storage.getRSVP(this.currentHousehold[0].householdId);
+    const existing = await API.getRSVP(this.currentHousehold[0].householdId);
 
     const mealOptionsTemplate = document.getElementById('meal-options-template');
     if (mealOptionsTemplate) {
