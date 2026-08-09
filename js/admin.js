@@ -5,12 +5,9 @@ const Admin = {
 
   async init() {
     await API.init();
-    const [guestsResp, configResp] = await Promise.all([
-      fetch('/data/guests.json'),
-      fetch('/data/config.json'),
-    ]);
+    const guestsResp = await fetch('/data/guests.json');
     this.guests = await guestsResp.json();
-    this.config = await configResp.json();
+    this.config = API._config;
     this._setup();
   },
 
