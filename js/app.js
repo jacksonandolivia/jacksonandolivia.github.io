@@ -60,25 +60,35 @@ const App = {
   async _handleLookup(e) {
     e.preventDefault();
     const errorEl = document.getElementById('lookup-error');
+    const btn = document.querySelector('#lookup-form .submit-btn');
+    const originalText = btn.textContent;
     const firstName = document.getElementById('lookup-firstname').value;
     const lastName = document.getElementById('lookup-lastname').value;
 
-    if (!firstName.trim() || !lastName.trim()) {
-      errorEl.textContent = 'Please enter both your first and last name.';
-      errorEl.hidden = false;
-      return;
-    }
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Finding...';
 
-    const household = RSVPForm.lookup(firstName, lastName);
-    if (!household) {
-      errorEl.textContent = `No party found for "${firstName} ${lastName}". Please check the spelling or contact the couple.`;
-      errorEl.hidden = false;
-      return;
-    }
+    try {
+      if (!firstName.trim() || !lastName.trim()) {
+        errorEl.textContent = 'Please enter both your first and last name.';
+        errorEl.hidden = false;
+        return;
+      }
 
-    errorEl.hidden = true;
-    const container = document.getElementById('rsvp-container');
-    await RSVPForm.render(container);
+      const household = RSVPForm.lookup(firstName, lastName);
+      if (!household) {
+        errorEl.textContent = `No party found for "${firstName} ${lastName}". Please check the spelling or contact the couple.`;
+        errorEl.hidden = false;
+        return;
+      }
+
+      errorEl.hidden = true;
+      const container = document.getElementById('rsvp-container');
+      await RSVPForm.render(container);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
   },
 
   _handleLogout() {
