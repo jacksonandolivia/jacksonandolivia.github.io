@@ -1,15 +1,10 @@
 const { CosmosClient } = require('@azure/cosmos');
 
 const VALID_MEALS = [
-  'chicken-piccata',
+  'chicken-chardonnay',
   'sirloin-filet-demi-glace',
-  'child-grilled-cheese',
-  'child-hamburger',
-  'child-mac-and-cheese',
-  'child-chicken-strips',
-  'child-pizza-cheese',
-  'child-pizza-pepperoni',
-  'child-peanut-butter-jelly',
+  'child-chicken-strips-milk',
+  'child-chicken-strips-juice'
 ];
 
 const client = new CosmosClient(process.env.COSMOS_CONNECTION_STRING);

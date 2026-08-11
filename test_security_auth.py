@@ -46,7 +46,7 @@ VALID_PAYLOAD = {
             "lastName": "Wikle",
             "ageGroup": "adult",
             "attending": True,
-            "meal": "chicken-piccata",
+            "meal": "chicken-chardonnay",
             "dietaryRestrictions": "",
         },
         {
