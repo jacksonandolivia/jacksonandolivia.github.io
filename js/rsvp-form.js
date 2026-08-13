@@ -209,17 +209,6 @@ const RSVPForm = {
     errorMsg.hidden = true;
     form.appendChild(errorMsg);
 
-    const contactBox = document.createElement('aside');
-    contactBox.className = 'contact-box';
-    contactBox.append('If you have any questions, please email us at ');
-
-    const emailLink = document.createElement('a');
-    emailLink.href = 'mailto:WikleHayesWeddingRSVP@proton.me';
-    emailLink.textContent = 'WikleHayesWeddingRSVP@proton.me';
-    contactBox.appendChild(emailLink);
-
-    form.appendChild(contactBox);
-
     form.addEventListener('submit', (e) => this._handleSubmit(e));
 
     container.appendChild(form);
