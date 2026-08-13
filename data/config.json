@@ -1,14 +1,9 @@
 {
   "mealOptions": [
-    { "value": "chicken-piccata", "label": "Chicken Piccata" },
+    { "value": "chicken-chardonnay", "label": "Chicken Chardonnay" },
     { "value": "sirloin-filet-demi-glace", "label": "Sirloin Filet With Demi-Glace" },
-    { "value": "child-grilled-cheese", "label": "(Child) Grilled Cheese with Potato Chips" },
-    { "value": "child-hamburger", "label": "(Child) Hamburger with Fries" },
-    { "value": "child-mac-and-cheese", "label": "(Child) Mac & Cheese with Garlic Fries" },
-    { "value": "child-chicken-strips", "label": "(Child) Chicken Strips with Fries" },
-    { "value": "child-pizza-cheese", "label": "(Child) Mini Cheese Pizza" },
-    { "value": "child-pizza-pepperoni", "label": "(Child) Mini Pepperoni Pizza" },
-    { "value": "child-peanut-butter-jelly", "label": "(Child) Peanut Butter & Jelly Sandwich" }
+    { "value": "child-chicken-strips-milk", "label": "(Child) Chicken Strips with Fries, Milk" },
+    { "value": "child-chicken-strips-juice", "label": "(Child) Chicken Strips with Fries, Juice" }
   ],
   "apiBaseUrl": "https://wedding-rsvp-api-gxgqpye4chgds.azurewebsites.net",
   "sitePasswordHash": "9bc7019ccf643299f55b7524ba74e6b6d1b3e223bb55bccac38897c654f52e79",

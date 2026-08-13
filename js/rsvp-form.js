@@ -4,6 +4,7 @@ const RSVPForm = {
   currentHousehold: null,
   currentLastName: null,
   submittedHouseholdId: null,
+  emailPattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 
   async init() {
     const [guestsResp] = await Promise.all([
@@ -263,6 +264,13 @@ const RSVPForm = {
       }
 
       const email = emailInput ? emailInput.value.trim() : '';
+      if (attending && email && !this.emailPattern.test(email)) {
+        errorEl.textContent = `Please enter a valid email address for ${guest.firstName} ${guest.lastName}.`;
+        errorEl.hidden = false;
+        emailInput.focus();
+        return;
+      }
+
       if (attending && email) {
         hasEmail = true;
       }
