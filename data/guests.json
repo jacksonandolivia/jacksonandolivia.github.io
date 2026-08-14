@@ -1030,9 +1030,9 @@
   },
   {
     "id": 148,
-    "firstName": "Tucker Kid",
+    "firstName": "Willa",
     "lastName": "Tucker",
-    "ageGroup": "adult",
+    "ageGroup": "child",
     "householdId": 66
   },
   {
@@ -1356,5 +1356,19 @@
     "lastName": "Wikle",
     "ageGroup": "adult",
     "householdId": 83
+  },
+  {
+    "id": 195,
+    "firstName": "Hayes",
+    "lastName": "Tucker",
+    "ageGroup": "child",
+    "householdId": 66
+  },
+  {
+    "id": 196,
+    "firstName": "Poppy",
+    "lastName": "Allison",
+    "ageGroup": "child",
+    "householdId": 68
   }
 ]

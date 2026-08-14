@@ -199,7 +199,11 @@ const Admin = {
       households[guest.householdId].push(guest);
     }
 
-    const householdIds = Object.keys(households).map(Number).sort((a, b) => a - b);
+    const householdIds = Object.keys(households).map(Number).sort((a, b) => {
+      const aResponded = this.rsvps[a] ? 1 : 0;
+      const bResponded = this.rsvps[b] ? 1 : 0;
+      return bResponded - aResponded || a - b;
+    });
 
     let totalGuests = 0;
     let totalAttending = 0;
