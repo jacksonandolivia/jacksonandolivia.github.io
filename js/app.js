@@ -69,15 +69,16 @@ const App = {
     btn.innerHTML = '<span class="spinner"></span> Finding...';
 
     try {
-      if (!firstName.trim() || !lastName.trim()) {
-        errorEl.textContent = 'Please enter both your first and last name.';
+      if (!firstName.trim()) {
+        errorEl.textContent = 'Please enter your first name.';
         errorEl.hidden = false;
         return;
       }
 
       const household = RSVPForm.lookup(firstName, lastName);
       if (!household) {
-        errorEl.textContent = `No party found for "${firstName} ${lastName}". Please check the spelling or contact the couple.`;
+        const nameDisplay = lastName.trim() ? `"${firstName} ${lastName}"` : `"${firstName}"`;
+        errorEl.textContent = `No party found for ${nameDisplay}. Please check the spelling or contact the couple.`;
         errorEl.hidden = false;
         return;
       }

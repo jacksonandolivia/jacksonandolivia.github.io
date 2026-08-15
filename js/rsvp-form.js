@@ -16,10 +16,11 @@ const RSVPForm = {
 
   lookup(firstName, lastName) {
     const trimmedFirst = firstName.trim().toLowerCase();
-    const trimmedLast = lastName.trim().toLowerCase();
+    const trimmedLast = (lastName || '').trim().toLowerCase();
 
     const matchedGuest = this.guests.find(
-      g => g.firstName.toLowerCase() === trimmedFirst && g.lastName.toLowerCase() === trimmedLast
+      g => g.firstName.toLowerCase() === trimmedFirst &&
+           (trimmedLast === '' || g.lastName.toLowerCase() === trimmedLast)
     );
     if (!matchedGuest) return null;
 
@@ -267,7 +268,7 @@ const RSVPForm = {
       guestsData.push({
         guestId: guest.id,
         firstName: guest.firstName,
-        lastName: guest.lastName,
+        lastName: guest.lastName || 'Guest',
         attending,
         meal: attending ? mealSelect.value : '',
         dietaryRestrictions: dietInput.value.trim(),

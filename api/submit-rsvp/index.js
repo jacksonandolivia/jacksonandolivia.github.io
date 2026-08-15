@@ -39,7 +39,7 @@ module.exports = async function (context, req) {
     for (const [i, g] of payload.guests.entries()) {
       if (typeof g.guestId !== 'number') errors.push(`guests[${i}].guestId must be a number`);
       if (!g.firstName || typeof g.firstName !== 'string') errors.push(`guests[${i}].firstName is required`);
-      if (!g.lastName || typeof g.lastName !== 'string') errors.push(`guests[${i}].lastName is required`);
+      if (g.lastName !== undefined && typeof g.lastName !== 'string') errors.push(`guests[${i}].lastName must be a string if provided`);
       if (typeof g.attending !== 'boolean') errors.push(`guests[${i}].attending must be a boolean`);
       if (g.attending && (!g.meal || !VALID_MEALS.includes(g.meal))) {
         errors.push(`guests[${i}].meal must be one of: ${VALID_MEALS.join(', ')}`);
