@@ -207,6 +207,7 @@ const Admin = {
 
     let totalGuests = 0;
     let totalAttending = 0;
+    let totalNotAttending = 0;
     let totalRsvped = 0;
     const mealCounts = {};
 
@@ -235,14 +236,18 @@ const Admin = {
           if (meal) {
             mealCounts[meal] = (mealCounts[meal] || 0) + 1;
           }
+        } else if (rsvpGuest) {
+          totalNotAttending++;
         }
 
+        const displayFirstName = (rsvpGuest && rsvpGuest.firstName) ? rsvpGuest.firstName : guest.firstName;
+        const displayLastName = (rsvpGuest && rsvpGuest.lastName) ? rsvpGuest.lastName : lastName;
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${hId}</td>
           <td>${rsvped ? 'Yes' : 'No'}</td>
-          <td>${lastName}</td>
-          <td>${guest.firstName}</td>
+          <td>${displayLastName}</td>
+          <td>${displayFirstName}</td>
           <td><span class="age-badge ${guest.ageGroup}">${guest.ageGroup === 'adult' ? 'Adult' : 'Child'}</span></td>
           <td class="cell-attending ${responded ? (attending ? 'status-yes' : 'status-no') : 'status-none'}">${responded ? (attending ? 'Yes' : 'No') : 'Not Responded'}</td>
           <td class="cell-meal">${meal ? this._mealLabel(meal) : '-'}</td>
@@ -265,7 +270,10 @@ const Admin = {
     document.getElementById('stat-rsvped').textContent = totalRsvped;
     document.getElementById('stat-not-rsvped').textContent = householdIds.length - totalRsvped;
     document.getElementById('stat-attending').textContent = totalAttending;
-    document.getElementById('stat-not-attending').textContent = totalGuests - totalAttending;
+    const totalNoResponse = totalGuests - totalAttending - totalNotAttending;
+    document.getElementById('stat-not-attending').textContent = totalNotAttending + totalNoResponse;
+    document.getElementById('stat-not-attending-detail').textContent =
+      `${totalNotAttending} not attending + ${totalNoResponse} no response`;
 
     const mealList = document.getElementById('meal-breakdown');
     mealList.innerHTML = '';
@@ -350,10 +358,12 @@ const Admin = {
         const diet = rsvpGuest && rsvpGuest.attending ? (rsvpGuest.dietaryRestrictions || '') : '';
         const email = rsvpGuest ? (rsvpGuest.email || '') : '';
 
+        const displayFirstName = (rsvpGuest && rsvpGuest.firstName) ? rsvpGuest.firstName : guest.firstName;
+        const displayLastName = (rsvpGuest && rsvpGuest.lastName) ? rsvpGuest.lastName : lastName;
         rows.push([
           hId,
-          lastName,
-          guest.firstName,
+          displayLastName,
+          displayFirstName,
           guest.ageGroup === 'adult' ? 'Adult' : 'Child',
           rsvped ? 'Yes' : 'No',
           attending,

@@ -62,16 +62,126 @@ const RSVPForm = {
 
       const header = document.createElement('div');
       header.className = 'guest-header';
+      let setNameEditable;
+      let editNameButton;
+      let saveNameButton;
 
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'guest-name';
-      nameSpan.textContent = `${guest.firstName} ${guest.lastName}`;
+      const hasPlaceholderName = [guest.firstName, guest.lastName]
+        .some(name => name.toLowerCase().includes('guest'));
+
+      if (hasPlaceholderName) {
+        header.classList.add('guest-header-editable');
+        const savedFirstName = existingGuest?.firstName || guest.firstName;
+        const savedLastName = existingGuest?.lastName || guest.lastName;
+        row.dataset.savedFirstName = savedFirstName;
+        row.dataset.savedLastName = savedLastName;
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'guest-name';
+        nameSpan.textContent = `${savedFirstName} ${savedLastName}`.trim();
+
+        const nameFields = document.createElement('div');
+        nameFields.className = 'guest-name-fields';
+        nameFields.hidden = true;
+
+        const firstNameInput = document.createElement('input');
+        firstNameInput.type = 'text';
+        firstNameInput.id = `first-name-${guest.id}`;
+        firstNameInput.className = 'guest-name-input';
+        firstNameInput.placeholder = 'First Name';
+        firstNameInput.autocomplete = 'given-name';
+        firstNameInput.value = existingGuest?.firstName || '';
+        firstNameInput.setAttribute('aria-label', 'First Name');
+        firstNameInput.disabled = true;
+
+        const lastNameInput = document.createElement('input');
+        lastNameInput.type = 'text';
+        lastNameInput.id = `last-name-${guest.id}`;
+        lastNameInput.className = 'guest-name-input';
+        lastNameInput.placeholder = 'Last Name';
+        lastNameInput.autocomplete = 'family-name';
+        lastNameInput.value = existingGuest?.lastName || '';
+        lastNameInput.setAttribute('aria-label', 'Last Name');
+        lastNameInput.disabled = true;
+
+        let savedInputFirstName = firstNameInput.value;
+        let savedInputLastName = lastNameInput.value;
+
+        editNameButton = document.createElement('button');
+        editNameButton.type = 'button';
+        editNameButton.className = 'edit-guest-name-btn';
+        editNameButton.textContent = 'Edit Name';
+        editNameButton.hidden = true;
+
+        saveNameButton = document.createElement('button');
+        saveNameButton.type = 'button';
+        saveNameButton.className = 'save-guest-name-btn';
+        saveNameButton.textContent = 'Save';
+        saveNameButton.hidden = true;
+
+        nameFields.appendChild(firstNameInput);
+        nameFields.appendChild(lastNameInput);
+        header.appendChild(nameSpan);
+        header.appendChild(nameFields);
+        header.appendChild(saveNameButton);
+        header.appendChild(editNameButton);
+
+        setNameEditable = (editable, saveChanges = false) => {
+          if (!editable && saveChanges) {
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+
+            if (!firstName || (!lastName && !isPlaceholder)) {
+              const errorEl = document.getElementById('form-error');
+              errorEl.textContent = 'Please enter both a first and last name for each guest.';
+              errorEl.hidden = false;
+              (firstName ? lastNameInput : firstNameInput).focus();
+              return;
+            }
+
+            row.dataset.savedFirstName = firstName;
+            row.dataset.savedLastName = lastName;
+            savedInputFirstName = firstName;
+            savedInputLastName = lastName;
+            nameSpan.textContent = `${firstName} ${lastName}`.trim();
+
+            // Clear any name validation error on successful save
+            const errorEl = document.getElementById('form-error');
+            if (errorEl && !errorEl.hidden) errorEl.hidden = true;
+          }
+
+          row.dataset.nameEditing = String(editable);
+          nameSpan.hidden = editable;
+          nameFields.hidden = !editable;
+          firstNameInput.disabled = !editable;
+          lastNameInput.disabled = !editable;
+          saveNameButton.hidden = !editable;
+          editNameButton.textContent = editable ? 'Cancel' : 'Edit Name';
+
+          if (!editable) {
+            firstNameInput.value = savedInputFirstName;
+            lastNameInput.value = savedInputLastName;
+          }
+        };
+
+        editNameButton.addEventListener('click', () => {
+          setNameEditable(row.dataset.nameEditing !== 'true');
+        });
+
+        saveNameButton.addEventListener('click', () => {
+          setNameEditable(false, true);
+        });
+      } else {
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'guest-name';
+        nameSpan.textContent = `${guest.firstName} ${guest.lastName}`;
+        header.appendChild(nameSpan);
+      }
 
       const badge = document.createElement('span');
       badge.className = `age-badge ${guest.ageGroup}`;
       badge.textContent = guest.ageGroup === 'adult' ? 'Adult' : 'Child';
 
-      header.appendChild(nameSpan);
       header.appendChild(badge);
 
       const radioGroup = document.createElement('div');
@@ -182,11 +292,20 @@ const RSVPForm = {
       const toggleFields = () => {
         const isAttending = radioYes.checked;
         mealSelect.disabled = !isAttending;
+        mealGroup.hidden = !isAttending;
+        dietGroup.hidden = !isAttending;
+        if (emailGroup) emailGroup.hidden = !isAttending;
         if (!isAttending) mealSelect.value = '';
+
+        if (editNameButton) {
+          editNameButton.hidden = !isAttending;
+          if (!isAttending) setNameEditable(false);
+        }
       };
 
       radioYes.addEventListener('change', toggleFields);
       radioNo.addEventListener('change', toggleFields);
+      toggleFields();
 
       row.appendChild(header);
       row.appendChild(radioGroup);
@@ -233,9 +352,27 @@ const RSVPForm = {
       const mealSelect = document.getElementById(`meal-${guest.id}`);
       const dietInput = document.getElementById(`diet-${guest.id}`);
       const emailInput = document.getElementById(`email-${guest.id}`);
+      const firstNameInput = document.getElementById(`first-name-${guest.id}`);
+      const lastNameInput = document.getElementById(`last-name-${guest.id}`);
+      const isNameEditing = row.dataset.nameEditing === 'true';
+      const firstName = isNameEditing
+        ? firstNameInput.value.trim()
+        : (row.dataset.savedFirstName || guest.firstName);
+      const lastName = isNameEditing
+        ? lastNameInput.value.trim()
+        : (row.dataset.savedLastName || guest.lastName);
+
+      const isPlaceholder = guest.firstName.toLowerCase().includes('guest');
+
+      if (isNameEditing && (!firstName || (!lastName && !isPlaceholder))) {
+        errorEl.textContent = 'Please enter both a first and last name for each guest.';
+        errorEl.hidden = false;
+        (firstNameInput && !firstName ? firstNameInput : lastNameInput).focus();
+        return;
+      }
 
       if (!radioYes.checked && !radioNo.checked) {
-        errorEl.textContent = `Please indicate whether ${guest.firstName} ${guest.lastName} will attend.`;
+        errorEl.textContent = `Please indicate whether ${firstName} ${lastName} will attend.`;
         errorEl.hidden = false;
         radioYes.focus();
         return;
@@ -243,10 +380,15 @@ const RSVPForm = {
 
       const attending = radioYes.checked;
 
+      // Fall back to the primary guest's last name for unnamed placeholder guests
+      const effectiveLastName = (!lastName && isPlaceholder)
+        ? (guestsData[0]?.lastName || this.currentLastName)
+        : lastName;
+
       if (attending) {
         hasAttending = true;
         if (!mealSelect.value) {
-          errorEl.textContent = `Please select a meal for ${guest.firstName}.`;
+          errorEl.textContent = `Please select a meal for ${firstName}.`;
           errorEl.hidden = false;
           mealSelect.focus();
           return;
@@ -255,7 +397,7 @@ const RSVPForm = {
 
       const email = emailInput ? emailInput.value.trim() : '';
       if (attending && email && !this.emailPattern.test(email)) {
-        errorEl.textContent = `Please enter a valid email address for ${guest.firstName} ${guest.lastName}.`;
+        errorEl.textContent = `Please enter a valid email address for ${firstName} ${lastName}.`;
         errorEl.hidden = false;
         emailInput.focus();
         return;
@@ -265,15 +407,17 @@ const RSVPForm = {
         hasEmail = true;
       }
 
-      guestsData.push({
+      const guestData = {
         guestId: guest.id,
-        firstName: guest.firstName,
-        lastName: guest.lastName || 'Guest',
+        firstName,
         attending,
         meal: attending ? mealSelect.value : '',
         dietaryRestrictions: dietInput.value.trim(),
         email: email || undefined,
-      });
+      };
+
+      if (effectiveLastName) guestData.lastName = effectiveLastName;
+      guestsData.push(guestData);
     }
 
     if (hasAttending && !hasEmail) {

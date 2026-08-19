@@ -268,6 +268,63 @@ h2 {
   flex: 1;
 }
 
+.guest-header-editable {
+  align-items: flex-start;
+}
+
+.guest-name-fields {
+  display: flex;
+  flex: 1;
+  gap: 0.5rem;
+}
+
+.guest-name-fields[hidden],
+.edit-guest-name-btn[hidden],
+.save-guest-name-btn[hidden] {
+  display: none;
+}
+
+.guest-name-input {
+  min-width: 0;
+  width: 50%;
+  padding: 0.4rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.guest-name-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.15);
+}
+
+.edit-guest-name-btn,
+.save-guest-name-btn {
+  padding: 0.35rem 0.55rem;
+  color: var(--color-primary);
+  background: none;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.edit-guest-name-btn:hover:not(:disabled),
+.save-guest-name-btn:hover:not(:disabled) {
+  color: #fff;
+  background: var(--color-primary);
+}
+
+.edit-guest-name-btn:disabled,
+.save-guest-name-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .attend-radio-group {
   display: flex;
   gap: 1.25rem;
@@ -498,6 +555,13 @@ h2 {
   font-size: 0.8rem;
   color: var(--color-text-muted);
   margin-top: 0.2rem;
+}
+
+.stat-detail {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
 }
 
 .stat-rsvped .stat-number {
