@@ -97,38 +97,38 @@ const Admin = {
     attendingCheckbox.type = 'checkbox';
     attendingCheckbox.checked = attending;
     attendingCheckbox.className = 'admin-edit-checkbox';
-    cells[5].innerHTML = '';
-    cells[5].appendChild(attendingCheckbox);
+    cells[6].innerHTML = '';
+    cells[6].appendChild(attendingCheckbox);
 
     const mealSelect = document.createElement('select');
     mealSelect.className = 'admin-edit-select';
     mealSelect.innerHTML = `<option value="">-- Select Meal --</option>${this._mealOptionsHtml(meal)}`;
     mealSelect.disabled = !attending;
-    cells[6].innerHTML = '';
-    cells[6].appendChild(mealSelect);
+    cells[7].innerHTML = '';
+    cells[7].appendChild(mealSelect);
 
     const dietInput = document.createElement('input');
     dietInput.type = 'text';
     dietInput.className = 'admin-edit-input';
     dietInput.value = diet;
     dietInput.placeholder = 'Dietary restrictions';
-    cells[7].innerHTML = '';
-    cells[7].appendChild(dietInput);
+    cells[8].innerHTML = '';
+    cells[8].appendChild(dietInput);
 
     const emailInput = document.createElement('input');
     emailInput.type = 'email';
     emailInput.className = 'admin-edit-input';
     emailInput.value = email;
     emailInput.placeholder = 'guest@example.com';
-    cells[8].innerHTML = '';
-    cells[8].appendChild(emailInput);
+    cells[9].innerHTML = '';
+    cells[9].appendChild(emailInput);
 
     attendingCheckbox.addEventListener('change', () => {
       mealSelect.disabled = !attendingCheckbox.checked;
       if (!attendingCheckbox.checked) mealSelect.value = '';
     });
 
-    const actionCell = cells[9];
+    const actionCell = cells[10];
     actionCell.innerHTML = '';
 
     const saveBtn = document.createElement('button');
@@ -200,9 +200,12 @@ const Admin = {
     }
 
     const householdIds = Object.keys(households).map(Number).sort((a, b) => {
-      const aResponded = this.rsvps[a] ? 1 : 0;
-      const bResponded = this.rsvps[b] ? 1 : 0;
-      return bResponded - aResponded || a - b;
+      const aRsvp = this.rsvps[a];
+      const bRsvp = this.rsvps[b];
+      if (aRsvp && bRsvp) return new Date(bRsvp.submittedAt) - new Date(aRsvp.submittedAt);
+      if (aRsvp) return -1;
+      if (bRsvp) return 1;
+      return a - b;
     });
 
     let totalGuests = 0;
@@ -242,10 +245,12 @@ const Admin = {
 
         const displayFirstName = (rsvpGuest && rsvpGuest.firstName) ? rsvpGuest.firstName : guest.firstName;
         const displayLastName = (rsvpGuest && rsvpGuest.lastName) ? rsvpGuest.lastName : lastName;
+        const submittedDate = rsvp ? new Date(rsvp.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-';
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${hId}</td>
           <td>${rsvped ? 'Yes' : 'No'}</td>
+          <td>${submittedDate}</td>
           <td>${displayLastName}</td>
           <td>${displayFirstName}</td>
           <td><span class="age-badge ${guest.ageGroup}">${guest.ageGroup === 'adult' ? 'Adult' : 'Child'}</span></td>
@@ -261,7 +266,7 @@ const Admin = {
         editBtn.className = 'btn-sm btn-sm-edit';
         editBtn.textContent = 'Edit';
         editBtn.addEventListener('click', () => this._editRow(guest, rsvp, rsvpGuest, row));
-        row.cells[9].appendChild(editBtn);
+        row.cells[10].appendChild(editBtn);
       }
     }
 
